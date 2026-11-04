@@ -1,0 +1,1262 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Meet Your Revenue Team</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<style>
+/* White, ink and two colours with one meaning each: blue is what the software made, pink is a person. Money stays in ink. */
+:root {
+  --ground: #FFFFFF; --ink: #0B0B12; --ink-2: #6B6F7B; --ink-3: #A9ACB5; --hair: #E4E6EB; --wash: #F5F6F8;
+  --agent: #2B2BFF; --agent-soft: rgba(43,43,255,0.14); --person: #FF2D6F; --person-soft: rgba(255,45,111,0.35);
+  --sans: Geist, "Helvetica Neue", Arial, sans-serif; --mono: "Geist Mono", ui-monospace, Menlo, monospace;
+  color-scheme: light;
+}
+html { background: var(--ground) }
+body { margin: 0; background: var(--ground); color: var(--ink); font-family: var(--sans); font-weight: 400; -webkit-font-smoothing: antialiased; overflow-x: hidden }
+.wrap { max-width: 1180px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); box-sizing: border-box }
+.cap { font: 400 11px/1.4 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2) }
+.num { font-family: var(--mono); font-variant-numeric: tabular-nums }
+h1, h2, h3 { font-weight: 500; margin: 0; text-wrap: balance }
+p { margin: 0 }
+button, input { font: inherit; color: inherit }
+:focus-visible { outline: 2px solid var(--agent); outline-offset: 3px }
+.top { display: flex; justify-content: space-between; align-items: center; gap: 16px; min-height: 32px }
+.brand { font: 500 19px var(--sans); letter-spacing: -0.02em; display: inline-flex; align-items: center; gap: 8px }
+.brand .logo { width: 26px; height: 26px; padding: 3px; box-sizing: border-box; background: #0A0A0B; border-radius: 7px; flex: none }
+.link { background: none; border: 0; padding: 0; cursor: pointer; color: var(--ink-2) }
+.link:hover { color: var(--ink) }
+.pill { background: var(--ink); color: #fff; border: 0; border-radius: 999px; padding: 15px 24px; font: 500 16px var(--sans); cursor: pointer; white-space: nowrap }
+.pill:hover { background: var(--agent) }
+.reply { min-height: 20px; color: var(--ink-2); font-size: 14px; text-align: center }
+
+/* stages */
+html:not([data-stage="build"]) #build, html:not([data-stage="build"]) .proof { display: none }
+html[data-stage="build"] #start { display: none }
+.stage { min-height: 100svh; display: flex; flex-direction: column }
+.stage > .wrap { flex: 1; display: flex; flex-direction: column; padding-block: 24px 36px; width: 100%; gap: 20px }
+
+/* start */
+.start .center { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 26px }
+.start h1 { font-size: clamp(44px, 7vw, 100px); line-height: 0.95; letter-spacing: -0.05em; max-width: 12ch }
+.start .lead-in { font-size: clamp(18px, 1.9vw, 24px); line-height: 1.35; letter-spacing: -0.015em; color: var(--ink-2); max-width: 52ch }
+.ask { display: grid; grid-template-columns: minmax(0, 1fr) 1px minmax(0, 1fr) auto; align-items: center; width: min(740px, 100%); padding: 6px; border: 1px solid var(--hair); border-radius: 999px; box-sizing: border-box; margin-top: 8px; background: #fff; box-shadow: 0 1px 0 rgba(11,11,18,0.02) }
+.ask:focus-within { border-color: var(--ink) }
+.ask label { display: flex; flex-direction: column; gap: 3px; padding: 6px 22px; text-align: left; min-width: 0; cursor: text }
+.ask label .cap { font-size: 10px }
+.ask input { background: none; border: 0; outline: none; font-size: 17px; padding: 0; min-width: 0; width: 100% }
+.ask input::placeholder { color: var(--ink-3) }
+.ask .sep { width: 1px; height: 34px; background: var(--hair) }
+.seed { display: flex; align-items: center; gap: 10px; margin-top: 30px }
+.seed .d { width: 12px; height: 12px; border-radius: 50%; background: var(--agent) }
+.seed .r { width: 12px; height: 12px; border-radius: 50%; border: 1.5px solid var(--person); box-sizing: border-box; margin-left: -6px; background: #fff }
+.mock { color: var(--ink-3); text-align: center }
+
+/* build: one continuous act under the goal */
+.build > .wrap { gap: 0 }
+.goal { display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; padding-top: 10px }
+.goal b { font: 500 clamp(36px, 5.2vw, 72px)/1 var(--sans); letter-spacing: -0.045em }
+.chart { display: flex; flex-direction: column; align-items: center; width: 100% }
+.line { background: var(--hair); transition: background .25s }
+.line.lit { background: var(--agent) }
+.v { width: 1.5px; height: 30px; transform-origin: 50% 0 }
+.rail-wrap { position: relative; width: 100%; height: 1.5px }
+.rail { position: absolute; left: 10%; right: 10%; top: 0; height: 1.5px; transform-origin: 50% 50% }
+.agents { display: grid; grid-template-columns: repeat(var(--n, 5), minmax(0, 1fr)); width: 100% }
+.col { display: flex; flex-direction: column; align-items: center; min-width: 0 }
+.node { display: flex; flex-direction: column; align-items: center; gap: 7px; text-align: center; padding: 10px 6px 0; min-width: 0 }
+.pair { display: flex; align-items: center; height: 18px }
+.disc { width: 18px; height: 18px; border-radius: 50%; background: var(--agent); position: relative }
+.disc.think { animation: think 0.7s ease-in-out infinite alternate }
+@keyframes think { to { transform: scale(0.72); opacity: 0.5 } }
+.pring { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--ink-3); background: #fff; box-sizing: border-box; margin-left: -6px; transition: border-color .3s, background .3s }
+.lit-p .pring { border-color: var(--person); background: var(--person) }
+.node h3 { font-size: clamp(16px, 1.6vw, 21px); letter-spacing: -0.025em; line-height: 1.1 }
+.who { font: 400 10.5px/1.35 var(--mono); letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-3); transition: color .3s }
+.lit-p .who { color: var(--person) }
+.amt { font: 500 15px var(--mono); font-variant-numeric: tabular-nums; letter-spacing: -0.02em }
+.cro h3 { font-size: clamp(20px, 2vw, 26px) }
+.cro .job { font-size: 14px; color: var(--ink-2); max-width: 44ch }
+
+.meter { width: min(860px, 100%); margin: 30px auto 0; display: flex; flex-direction: column; gap: 10px }
+.meter-row { display: flex; justify-content: space-between; align-items: baseline; gap: 16px }
+.meter-row b { white-space: nowrap; font: 500 clamp(20px, 2vw, 26px) var(--mono); letter-spacing: -0.03em; font-variant-numeric: tabular-nums }
+.track { position: relative; height: 6px; border-radius: 3px; background: var(--wash) }
+.faint, .solid { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 3px; width: 0 }
+.faint { background: var(--agent-soft) }
+.solid { background: var(--agent) }
+.tick { position: absolute; top: -9px; bottom: -9px; width: 2px; background: var(--ink); left: 66.67% }
+.scale { position: relative; height: 14px }
+.scale span { position: absolute; transform: translateX(-50%) }
+.scale span:first-child { transform: none }
+.scale span:last-child { transform: translateX(-100%) }
+.scale .g { color: var(--ink) }
+
+.acts { display: flex; gap: 20px }
+.goal b { font-size: clamp(28px, 3.8vw, 52px) }
+
+/* the story card: what it found, who it chose and why, before each agent flies into the chart */
+.story { display: grid; justify-items: center; margin: 18px 0 8px; min-height: 290px; align-items: center }
+.story.done { min-height: 0 }
+.story.done .card { display: none }
+.story > * { grid-area: 1 / 1 }
+.card { position: relative; z-index: 5; width: min(680px, 100%); box-sizing: border-box; background: #fff; border: 1px solid var(--hair); border-radius: 20px; padding: 20px 24px 22px; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 24px 60px -36px rgba(11,11,18,0.28); visibility: hidden }
+.card-top { display: flex; justify-content: space-between; gap: 12px }
+.card-top .num { color: var(--ink) }
+.card h2 { font-size: clamp(24px, 2.6vw, 34px); letter-spacing: -0.035em; line-height: 1.08 }
+.card .lead { font-size: 16px; line-height: 1.55; color: var(--ink-2) }
+.card .lead q { color: var(--ink) }
+.card .lead strong { color: var(--ink); font-weight: 400 }
+.card .src { color: var(--ink-3); margin-top: 2px }
+.card ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 7px }
+.card li { font-size: 15px; line-height: 1.45; color: var(--ink-2); padding-left: 16px; position: relative }
+.card li::before { content: ""; position: absolute; left: 0; top: 0.6em; width: 6px; height: 6px; border-radius: 50%; background: var(--ink-3) }
+.card li b { color: var(--ink); font-weight: 400 }
+.bigs { display: flex; flex-wrap: wrap; gap: 10px 32px }
+.bigs div { display: flex; flex-direction: column; gap: 2px }
+.bigs b { font: 500 clamp(24px, 2.6vw, 32px) var(--mono); letter-spacing: -0.03em }
+.bigs span { font-size: 13px; color: var(--ink-2) }
+.facts2 { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 8px 18px; margin-top: 2px }
+.facts2 dt { font: 400 11px/1.9 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3) }
+.facts2 dd { margin: 0; font-size: 15px; line-height: 1.5; color: var(--ink-2) }
+.facts2 dd.p { color: var(--person) }
+.facts2 dd.m { font: 500 16px var(--mono); color: var(--ink) }
+.card .badge { display: inline-flex; align-items: center; gap: 8px }
+.card .badge .disc, .card .badge .pring { width: 14px; height: 14px }
+.card .badge .pring { border-color: var(--person); background: var(--person) }
+.slot { display: grid; justify-items: center; margin-top: 26px; flex: 1; align-content: start }
+.closer { display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; width: 100%; visibility: hidden }
+.finale { display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center; visibility: hidden }
+@media (max-width: 620px) { .facts2 { grid-template-columns: minmax(0, 1fr); gap: 2px } .facts2 dd { margin-bottom: 8px } .acts #skip { display: none } .story { min-height: 320px } }
+.finale h1 { font-size: clamp(34px, 5vw, 68px); line-height: 1; letter-spacing: -0.045em }
+.finale .sub { font-size: 17px; color: var(--ink-2) }
+.claim { display: flex; gap: 8px; width: min(500px, 100%); padding: 6px; border: 1px solid var(--hair); border-radius: 999px; box-sizing: border-box; margin-top: 10px }
+.claim:focus-within { border-color: var(--ink) }
+.claim input { flex: 1; min-width: 0; background: none; border: 0; padding: 0 16px; font-size: 16px; outline: none }
+.claim input::placeholder { color: var(--ink-3) }
+.floor { font-size: 12.5px; color: var(--ink-3); max-width: 64ch; line-height: 1.5 }
+
+.flood { position: fixed; inset: 0; z-index: 20; background: var(--agent); color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; text-align: center; transform: scaleY(0); transform-origin: 50% 100%; pointer-events: none; padding: 16px }
+.flood b { font: 500 clamp(40px, 7vw, 104px)/1 var(--mono); letter-spacing: -0.05em }
+.flood span { font: 400 12px var(--mono); letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.8 }
+
+@media (max-width: 760px) {
+  .rail-wrap, .col > .v { display: none }
+  .agents { grid-template-columns: minmax(0, 1fr); border-left: 1.5px solid var(--hair); margin-left: 9px; width: auto; align-self: stretch }
+  .col { align-items: stretch }
+  .agents .node { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; grid-template-areas: "p n a" "p w a"; column-gap: 12px; row-gap: 2px; text-align: left; align-items: center; padding: 9px 0 9px 14px }
+  .agents .pair { grid-area: p } .agents h3 { grid-area: n } .agents .who { grid-area: w } .agents .amt { grid-area: a }
+  .ask { grid-template-columns: minmax(0, 1fr); border-radius: 22px }
+  .ask .sep { width: auto; height: 1px; margin: 0 16px }
+  .ask label { padding: 12px 16px }
+  .ask .pill, .claim .pill { width: 100% }
+  .claim { flex-direction: column; border-radius: 22px }
+  .claim input { padding: 12px 14px }
+  .ticker .txt { white-space: normal }
+}
+
+/* the card at work: a spinner while the run is going, a skeleton before each finding, a bar for the time on the card */
+.card { overflow: hidden }
+.spin { display: inline-block; width: 11px; height: 11px; border-radius: 50%; border: 1.5px solid var(--hair); border-top-color: var(--agent); box-sizing: border-box; margin-right: 8px; vertical-align: -2px; animation: spin 0.7s linear infinite }
+@keyframes spin { to { transform: rotate(360deg) } }
+.card-main { position: relative; display: flex; flex-direction: column; gap: 10px }
+.skel { position: absolute; inset: 0; display: flex; flex-direction: column; gap: 10px; visibility: hidden; overflow: hidden }
+.skel p { font: 400 15px/1.3 var(--mono); color: var(--agent) }
+.skel p::after { content: "\2026" }
+.skel i { display: block; height: 11px; border-radius: 6px; background: linear-gradient(90deg, var(--wash) 25%, #E3E6F6 50%, var(--wash) 75%); background-size: 200% 100%; animation: shimmer 0.9s linear infinite }
+.skel i:nth-of-type(1) { width: 92% } .skel i:nth-of-type(2) { width: 78% } .skel i:nth-of-type(3) { width: 58% }
+@keyframes shimmer { from { background-position: 200% 0 } to { background-position: -200% 0 } }
+.prog { position: absolute; left: 0; right: 0; bottom: 0; height: 2.5px; background: var(--agent); transform: scaleX(0); transform-origin: 0 50% }
+
+/* the living chart: building blocks, loops and each agent at work */
+.pair { position: relative; height: 34px; justify-content: center }
+.orbit { position: absolute; left: 50%; top: 50%; width: 40px; height: 40px; margin: -20px 0 0 -20px; border: 1px dashed var(--hair); border-radius: 50%; box-sizing: border-box; opacity: 0; transition: opacity .6s; pointer-events: none }
+.orbit i { position: absolute; left: 50%; top: -3px; width: 5px; height: 5px; margin-left: -2.5px; border-radius: 50%; background: var(--agent) }
+.node.on .orbit { opacity: 1; animation: orbit 4.5s linear infinite }
+.alive .col:nth-child(2) .orbit { animation-delay: -0.9s } .alive .col:nth-child(3) .orbit { animation-delay: -1.8s } .alive .col:nth-child(4) .orbit { animation-delay: -2.7s } .alive .col:nth-child(5) .orbit { animation-delay: -3.6s }
+@keyframes orbit { to { transform: rotate(360deg) } }
+.blocks { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; max-width: 100% }
+.blocks span { font: 400 10px/1.3 var(--mono); color: var(--agent); background: rgba(43,43,255,0.07); border-radius: 5px; padding: 3px 6px }
+.chart { position: relative }
+#loopsvg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 2 }
+#loopsvg circle { transition: opacity .25s; opacity: 0 }
+.chart.focus #loopsvg circle.on { opacity: 1 }
+.alive .node { cursor: pointer; border-radius: 14px; transition: opacity .25s, background .25s }
+.chart.focus .node:not(.on) { opacity: 0.22 }
+.chart.focus .line:not(.lit-on) { opacity: 0.3 }
+.alive .node:focus-visible { outline: 2px solid var(--agent); outline-offset: 2px }
+.loopkey { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 26px; margin-top: 18px; font-size: 13px; line-height: 1.4; color: var(--ink-2); visibility: hidden; opacity: 0; transition: opacity .6s }
+.alive .loopkey { visibility: visible; opacity: 1 }
+.loopkey span { display: inline-flex; align-items: center; gap: 8px }
+.k { width: 9px; height: 9px; border-radius: 50%; flex: none; box-sizing: border-box }
+.k.o { border: 1px dashed var(--ink-2) } .k.u { background: var(--agent) } .k.d { background: #fff; border: 2px solid var(--agent) }
+.hint { text-align: center; margin-top: 8px; color: var(--agent); visibility: hidden; opacity: 0; transition: opacity .6s }
+.alive .hint { visibility: visible; opacity: 1 }
+
+.at-work { position: fixed; z-index: 15; width: 440px; max-width: calc(100vw - 32px); box-sizing: border-box; background: #fff; border: 1px solid var(--hair); border-radius: 18px; padding: 18px 20px; box-shadow: 0 28px 70px -30px rgba(11,11,18,0.4); display: flex; flex-direction: column; gap: 10px; opacity: 0; visibility: hidden; transform: translateY(6px); transition: opacity .18s, transform .18s, visibility .18s; pointer-events: none }
+.at-work.show { opacity: 1; visibility: visible; transform: none }
+.at-work h3 { font-size: 22px; letter-spacing: -0.03em; line-height: 1.1 }
+.at-work .pw { color: var(--person); font-size: 14px }
+.at-work ol { list-style: none; margin: 2px 0 0; padding: 0; display: flex; flex-direction: column; gap: 3px }
+.at-work li { display: grid; grid-template-columns: 14px minmax(0, 1fr); gap: 9px; font-size: 14px; line-height: 1.4; color: var(--ink-3); padding: 3px 0; transition: color .2s }
+.at-work li::before { content: ""; width: 8px; height: 8px; margin: 5px 3px 0; border-radius: 50%; background: var(--hair); transition: background .2s, transform .2s }
+.at-work li.past { color: var(--ink-2) } .at-work li.past::before { background: var(--agent) }
+.at-work li.now { color: var(--ink) } .at-work li.now::before { background: var(--agent); transform: scale(1.5) }
+.at-work li.p.past::before, .at-work li.p.now::before { background: var(--person) }
+.at-work li.p.now { color: var(--person) }
+.at-work .learn { border-top: 1px solid var(--hair); padding-top: 10px; font-size: 14px; line-height: 1.45; color: var(--ink-2) }
+.at-work .learn b { display: block; font: 400 10.5px/1.6 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--agent) }
+.at-work .note { color: var(--ink-3); font-size: 10px }
+@media (max-width: 760px) {
+  .agents .node { grid-template-areas: "p n a" "p w a" "p b b" }
+  .agents .blocks { grid-area: b; justify-content: flex-start; margin-top: 4px }
+  .at-work { left: 16px !important; right: 16px; width: auto; top: auto !important; bottom: 16px }
+  .agents .pair { width: 40px }
+}
+
+.finale { gap: 10px }
+.finale h1 { font-size: clamp(30px, 4.2vw, 56px) }
+.finale .sub { font-size: 16px }
+.closer { gap: 6px; margin-top: 4px }
+.closer .claim { margin-top: 2px }
+.closer .reply { min-height: 0 }
+.closer .reply:empty { display: none }
+.chart .v { height: 20px }
+.slot { margin-top: 0 }
+
+/* the blueprint under the form: the real library, drawn as one org. Blue is the software, pink a person. */
+.start .center { flex: 0 0 auto; gap: 14px; padding-top: clamp(8px, 1.6vh, 20px) }
+.start h1 { font-size: clamp(40px, 4.8vw, 66px); max-width: 20ch }
+.start .lead-in { font-size: clamp(17px, 1.6vw, 21px) }
+.start .ask { margin-top: 2px }
+.start .reply { min-height: 0 }
+.start .reply:empty { display: none }
+.bp { display: flex; flex-direction: column; gap: 11px; text-align: left; margin-top: clamp(10px, 1.8vh, 20px); border-top: 1px solid var(--hair); padding-top: 14px }
+.bp-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px 24px; flex-wrap: wrap }
+.bp-head h2 { font-size: clamp(20px, 2vw, 26px); letter-spacing: -0.03em; line-height: 1.15 }
+.bp-chips { display: flex; flex-wrap: wrap; gap: 6px }
+.bp-chip { background: #fff; border: 1px solid var(--hair); border-radius: 999px; padding: 6px 12px; font: 400 13px/1.2 var(--sans); letter-spacing: -0.005em; color: var(--ink-2); cursor: pointer; white-space: nowrap; transition: background .18s, color .18s, border-color .18s }
+.bp-chip:hover { border-color: var(--ink); color: var(--ink) }
+.bp-chip[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #fff }
+.bp-map { position: relative; padding-top: 4px }
+.bp-lines { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible }
+.bp-lines path { fill: none; stroke: var(--hair); stroke-width: 1.5 }
+#bp-on path { stroke: var(--agent); stroke-dasharray: 3 7; stroke-linecap: round; animation: bp-flow 0.9s linear infinite; opacity: 0; transition: opacity .2s }
+#bp-on path.on { opacity: 1 }
+@keyframes bp-flow { to { stroke-dashoffset: -10 } }
+.bp-top { position: relative; display: flex; justify-content: center; margin-bottom: 14px }
+.bp-org { position: relative; display: flex; gap: 0; align-items: flex-start }
+.bp-group { min-width: 0; display: flex; flex-direction: column; align-items: stretch; flex-basis: 0 }
+.bp-seats { display: flex; margin-top: 14px; align-items: flex-start }
+.bp-seat { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 6px }
+.bp-n { position: relative; background: #fff; border: 0; padding: 2px 3px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--ink-3); text-align: center; transition: color .18s; min-width: 0; border-radius: 6px; margin-inline: auto }
+.bp-n span { font: 400 12px/1.15 var(--sans); letter-spacing: -0.005em }
+.bp-n .bp-disc { width: 10px; height: 10px; border-radius: 50%; background: var(--hair); transition: background .18s, transform .18s; flex: none }
+.bp-n.lit { color: var(--ink) }
+.bp-n.lit .bp-disc { background: var(--agent) }
+.bp-n.lead span { font-size: 14px; font-weight: 500; letter-spacing: -0.015em }
+.bp-n.lead .bp-disc { width: 13px; height: 13px }
+.bp-n:hover { color: var(--ink) }
+.bp-n.cro { flex-direction: row; gap: 8px; padding: 2px 8px }
+.bp-n.cro span { font-size: 17px; font-weight: 500; letter-spacing: -0.02em }
+.bp-n.cro .bp-disc { width: 16px; height: 16px; background: var(--agent) }
+.bp-n.cro { color: var(--ink) }
+.bp-n.cro .pring { width: 16px; height: 16px; margin-left: -14px; border-color: var(--person); background: var(--person); border-radius: 50%; border-width: 1.5px; border-style: solid; box-sizing: border-box }
+.bp-solo { min-height: 44px }
+.bp-dots { position: relative; display: flex; flex-wrap: wrap; justify-content: center; width: 60px; background: #fff }
+.bp-lead-dots { width: auto; margin-top: 3px }
+.bp-d { width: 15px; height: 15px; display: grid; place-items: center; cursor: pointer }
+.bp-d i { display: block; width: 9px; height: 9px; border-radius: 50%; background: #E1E3EA; box-sizing: border-box; border: 1.5px solid transparent; transition: background .22s var(--w, 0ms), border-color .22s var(--w, 0ms), transform .22s var(--w, 0ms) }
+.bp-d:hover i { transform: scale(1.5) }
+.bp-d.core i { background: var(--agent) }
+.bp-d.opt i { background: #fff; border-color: var(--agent) }
+.bp-d.here i { transform: scale(1.5) }
+.bp-read { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.8fr) minmax(0, 1fr); gap: 10px 28px; min-height: 118px; align-content: start; border-top: 1px solid var(--hair); padding-top: 12px }
+.bp-read h3 { font-size: 19px; letter-spacing: -0.025em; line-height: 1.15; margin: 3px 0 4px }
+.bp-read p { font-size: 14px; line-height: 1.35; color: var(--ink-2); letter-spacing: -0.005em }
+.bp-read .val { color: var(--ink); margin-top: 3px }
+.bp-read .names { font-size: 12.5px; margin-top: 4px }
+.bp-read .keeps .cap { color: var(--person) }
+.bp-read ul { margin: 3px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 2px }
+.bp-read li { font-size: 14px; line-height: 1.3; color: var(--ink); padding-left: 13px; position: relative; letter-spacing: -0.005em }
+.bp-read li::before { content: ""; position: absolute; left: 0; top: 0.36em; width: 7px; height: 7px; border-radius: 50%; border: 1.5px solid var(--person); box-sizing: border-box }
+.bp-kit { display: flex; align-items: center; gap: 8px 14px; flex-wrap: wrap; border-top: 1px solid var(--hair); padding-top: 12px }
+.bp-kit .bp-chip.floors { color: var(--person); border-color: var(--person-soft) }
+.bp-kit .bp-chip.floors[aria-pressed="true"] { background: var(--person); border-color: var(--person); color: #fff }
+.bp-key { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 18px; font: 400 11px/1.4 var(--mono); letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-3) }
+.bp-key span { display: inline-flex; align-items: center; gap: 6px }
+.bp-key .disc { width: 10px; height: 10px; display: block }
+.bp-key .pring { width: 10px; height: 10px; display: block; border-color: var(--person); margin-left: -10px }
+.bp-key .k { width: 9px; height: 9px; border-radius: 50%; box-sizing: border-box; display: block }
+.bp-key .k.core { background: var(--agent) }
+.bp-key .k.opt { border: 1.5px solid var(--agent) }
+.bp-honest { margin-left: auto }
+.start .mock { margin-top: 2px }
+@media (max-width: 760px) {
+  .start h1 { font-size: clamp(38px, 11vw, 56px); max-width: 12ch }
+  .bp-lens { flex-wrap: nowrap; overflow-x: auto; margin-inline: -16px; padding-inline: 16px; scrollbar-width: none }
+  .bp-lens::-webkit-scrollbar { display: none }
+  .bp-lines { display: none }
+  .bp-top { justify-content: flex-start; margin-bottom: 4px }
+  .bp-top > div { flex-direction: row !important; justify-content: space-between; width: 100%; align-items: center !important }
+  .bp-org { flex-direction: column; gap: 10px }
+  .bp-group { width: 100%; flex: none !important; border-top: 1px solid var(--hair); padding-top: 6px; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center }
+  .bp-seats { grid-column: 1 / -1 }
+  .bp-group.solo .bp-seats { grid-column: 2; margin: 0 }
+  .bp-group.solo .bp-seat { width: auto }
+  .bp-group.solo .bp-dots { width: auto; max-width: none; flex-wrap: nowrap }
+  .bp-seats { flex-direction: column; margin-top: 2px; gap: 0 }
+  .bp-seat { flex: none; width: 100%; flex-direction: row; justify-content: space-between; align-items: center; gap: 10px; min-height: 40px }
+  .bp-n { flex-direction: row; gap: 8px; margin: 0; text-align: left; min-height: 40px }
+  .bp-n span { font-size: 15px }
+  .bp-n.lead span { font-size: 16px }
+  .bp-group > .bp-n { justify-content: flex-start; justify-self: start }
+  .bp-group > .bp-lead-dots { margin-top: 0 }
+  .bp-lead-dots { margin-top: 0 }
+  .bp-dots { width: auto; max-width: 62%; justify-content: flex-end; background: none }
+  .bp-solo { display: none }
+  .bp-d { width: 22px; height: 22px }
+  .bp-read { grid-template-columns: minmax(0, 1fr); min-height: 292px; align-content: start }
+  .bp-read.inline { grid-column: 1 / -1; width: 100%; min-height: 0; background: var(--wash); border: 0; border-radius: 10px; padding: 12px; margin: 4px 0 8px; box-sizing: border-box }
+  .bp-honest { margin-left: 0 }
+}
+
+@media (prefers-reduced-motion: reduce) { #bp-on path { animation: none; stroke-dasharray: none } }
+
+/* proof, in the same light language */
+section.proof { padding-block: clamp(80px, 13vh, 140px); border-top: 1px solid var(--hair) }
+.lede { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(28px, 5vw, 80px); align-items: start }
+.lede h2 { font-size: clamp(34px, 4.4vw, 60px); letter-spacing: -0.045em; line-height: 1.02 }
+.lede .copy { display: flex; flex-direction: column; gap: 18px; max-width: 62ch }
+.lede .copy p { font-size: 18px; line-height: 1.55; color: var(--ink-2) }
+.lede .copy p strong { color: var(--ink); font-weight: 400 }
+.facts { display: flex; flex-wrap: wrap; gap: 8px 24px }
+.glass { background: #fff; border: 1px solid var(--hair); border-radius: 18px }
+.claims { margin-top: 56px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px }
+.claims .glass { padding: 22px; display: flex; flex-direction: column; gap: 12px }
+.claims .big { font: 500 clamp(28px, 3vw, 40px) var(--mono); letter-spacing: -0.03em }
+.claims p { font-size: 14px; line-height: 1.5; color: var(--ink-2) }
+.rivals { margin-top: 56px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(20px, 3vw, 44px) }
+.rivals div { display: flex; flex-direction: column; gap: 10px; border-top: 1px solid var(--hair); padding-top: 18px }
+.rivals h3 { font-size: 20px; letter-spacing: -0.02em }
+.rivals p { font-size: 14px; line-height: 1.55; color: var(--ink-2) }
+.motions { margin-top: 56px; display: flex; flex-direction: column }
+.motion { display: grid; grid-template-columns: 28px minmax(0, 3fr) minmax(0, 5fr) minmax(0, 3fr); gap: 20px; align-items: start; padding-block: 22px; border-top: 1px solid var(--hair) }
+.motion:last-child { border-bottom: 1px solid var(--hair) }
+.motion h3 { font-size: 20px; letter-spacing: -0.02em; line-height: 1.15 }
+.motion .who { margin-top: 8px; color: var(--person) }
+.motion .why { font-size: 15px; line-height: 1.55; color: var(--ink-2) }
+.mbar { display: flex; flex-direction: column; gap: 8px }
+.range { font: 500 18px var(--mono); letter-spacing: -0.02em }
+.mtrack { position: relative; height: 6px; border-radius: 3px; background: var(--wash) }
+.mtrack i { position: absolute; top: 0; bottom: 0; border-radius: 3px; background: var(--agent) }
+.dayone { margin-top: 28px; font-size: 16px; color: var(--ink-2); max-width: 70ch; line-height: 1.55 }
+.dayone strong { color: var(--ink); font-weight: 400 }
+.app { margin-top: 56px; border-radius: 22px; overflow: hidden; box-shadow: 0 30px 80px -40px rgba(11,11,18,0.25) }
+.bar-top { display: flex; align-items: center; gap: 20px; padding: 14px 18px; border-bottom: 1px solid var(--hair); flex-wrap: wrap }
+.bar-top .title { font: 500 15px var(--sans) }
+.tabs { display: flex; gap: 4px; padding: 3px; border-radius: 10px; background: var(--wash) }
+.tabs button { background: none; border: 0; padding: 6px 12px; border-radius: 8px; font-size: 13px; color: var(--ink-2); cursor: pointer }
+.tabs button[aria-selected="true"] { background: #fff; color: var(--ink); box-shadow: 0 1px 2px rgba(11,11,18,0.08) }
+.bar-top .live { margin-left: auto; display: flex; align-items: center; gap: 8px }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--agent); flex: none }
+.app-body { display: grid; grid-template-columns: 240px minmax(0, 1fr); min-height: 420px }
+.side { border-right: 1px solid var(--hair); padding: 14px 10px; display: flex; flex-direction: column; gap: 2px; background: #FBFBFC }
+.side .cap { padding: 6px 10px 10px }
+.side div.row { display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 8px; font-size: 14px }
+.pane { padding: 22px; min-width: 0 }
+.counts { display: flex; gap: 22px; margin-bottom: 18px }
+.counts b { color: var(--ink); font-weight: 500 }
+.draft { padding: 22px; display: flex; flex-direction: column; gap: 14px; max-width: 640px; border-radius: 16px }
+.draft h3 { font-size: 22px; letter-spacing: -0.02em; line-height: 1.2 }
+.draft .body { font-size: 15px; line-height: 1.6; color: var(--ink-2) }
+.draft .foot { display: flex; align-items: center; gap: 12px; flex-wrap: wrap }
+.draft .wait { font: 400 11px var(--mono); letter-spacing: 0.06em; text-transform: uppercase; padding: 6px 9px; border-radius: 6px; color: var(--person); border: 1px solid var(--person-soft); transition: color .4s, border-color .4s, background .4s }
+.draft .wait.sent { color: #fff; background: var(--person); border-color: var(--person) }
+.draft .send { margin-left: auto; padding: 10px 20px; font-size: 15px }
+.draft .send[disabled] { opacity: 0.3; cursor: default }
+.example { margin-top: 14px }
+table.roster { width: 100%; border-collapse: collapse; font-size: 14px }
+.roster th { text-align: left; font: 400 11px var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2); padding: 0 12px 12px 0 }
+.roster td { padding: 13px 12px 13px 0; border-top: 1px solid var(--hair); vertical-align: top }
+.roster td.m, .roster td.l { font-family: var(--mono); font-variant-numeric: tabular-nums }
+.roster td.o { color: var(--person) }
+.scroller { overflow-x: auto }
+footer { border-top: 1px solid var(--hair); padding-block: 28px 40px }
+footer p { font-size: 13px; line-height: 1.6; color: var(--ink-3); max-width: 90ch }
+@media (max-width: 1000px) {
+  .lede, .claims, .rivals { grid-template-columns: minmax(0, 1fr) }
+  .motion { grid-template-columns: 24px minmax(0, 1fr) }
+  .motion .why, .motion .mbar { grid-column: 2 }
+  .app-body { grid-template-columns: minmax(0, 1fr) }
+  .side { border-right: 0; border-bottom: 1px solid var(--hair); flex-direction: row; flex-wrap: wrap }
+  .side .cap { width: 100% }
+}
+.card-main { min-height: 130px }
+.proof.result { display: none }
+html.has-results[data-stage="build"] .proof.result { display: block }
+.consent { display: flex; gap: 8px; align-items: flex-start; font-size: 13px; line-height: 1.4; margin-top: 10px; text-align: left; max-width: 460px }
+.consent input { margin-top: 2px; flex: none }
+.consent a { color: inherit; text-decoration: underline }
+.booked { display: flex; flex-direction: column; gap: 12px; align-items: center }
+.booked a.pill { text-decoration: none }
+.booked[hidden], .claim[hidden], .consent[hidden], .pill[hidden] { display: none }
+.dayone ul { margin: 6px 0 14px; padding-left: 18px }
+</style>
+
+<main>
+<section class="stage start" id="start" aria-labelledby="start-h">
+  <div class="wrap">
+    <div class="top"><span class="brand"><svg class="logo" viewBox="-1 -1 324 324" aria-hidden="true"><path fill="#FFDEB1" d="M191.988 46.1268C191.988 26.1447 178.296 9.36016 159.781 4.64416C166.069 1.57861 172.975 -0.00988396 179.971 4.62724e-05C205.446 4.62724e-05 226.098 20.6519 226.098 46.1268C226.098 71.6017 205.446 92.2535 179.971 92.2535C172.975 92.2635 166.069 90.6751 159.781 87.6095C178.294 82.8935 191.988 66.1089 191.988 46.1268Z"/><path fill="#FFB85C" d="M130.766 45.3889C120.77 28.084 100.524 20.3956 82.1322 25.5673C86.0453 19.7683 91.2315 14.9399 97.2951 11.4507C119.357 -1.28032 147.568 6.2716 160.306 28.3349C173.044 50.3983 165.483 78.6076 143.422 91.3441C137.368 94.8508 130.594 96.9283 123.615 97.418C137.291 84.0763 140.758 62.6938 130.766 45.3889Z"/><path fill="#FF900B" d="M77.3768 75.3658C60.07 65.3729 38.6893 68.8397 25.3458 82.5173C25.8352 75.5379 27.9127 68.7627 31.4197 62.7086C44.1507 40.6471 72.3674 33.0879 94.4289 45.8262C116.49 58.5646 124.05 86.7738 111.313 108.835C107.823 114.899 102.994 120.085 97.1947 123.998C102.37 105.603 94.6817 85.3532 77.3768 75.3658Z"/><path fill="#FF3927" d="M46.1268 128.013C26.1429 128.013 9.36009 141.705 4.64409 160.221C1.57854 153.932 -0.00988397 147.026 4.62746e-05 140.03C4.62746e-05 114.555 20.6519 93.9034 46.1268 93.9034C71.6017 93.9034 92.2536 114.555 92.2536 140.03C92.2626 147.026 90.6743 153.932 87.6096 160.221C82.8936 141.705 66.109 128.013 46.1268 128.013Z"/><path fill="#FC115E" d="M45.389 189.234C28.0822 199.225 20.3975 219.477 25.5637 237.869C19.7647 233.955 14.9363 228.769 11.4471 222.706C-1.28761 200.646 6.27165 172.433 28.3313 159.695C50.391 146.956 78.604 154.516 91.3405 176.579C94.8473 182.632 96.9248 189.407 97.4145 196.386C84.0765 182.71 62.6939 179.243 45.389 189.234Z"/><path fill="#F632A1" d="M75.3607 242.623C65.3696 259.93 68.8365 281.31 82.5122 294.654C75.5335 294.164 68.7589 292.087 62.7054 288.58C40.6438 275.849 33.0846 247.632 45.8211 225.571C58.5576 203.509 86.7706 195.95 108.832 208.687C114.896 212.176 120.082 217.004 123.995 222.803C105.603 217.63 85.3536 225.318 75.3607 242.623Z"/><path fill="#B751DD" d="M128.011 273.873C128.011 293.857 141.705 310.64 160.22 315.356C153.932 318.421 147.026 320.009 140.03 320C114.555 320 93.903 299.348 93.903 273.873C93.903 248.398 114.555 227.747 140.03 227.747C147.026 227.738 153.931 229.326 160.22 232.391C141.705 237.107 128.011 253.891 128.011 273.873Z"/><path fill="#6074FB" d="M189.234 274.611C199.225 291.916 219.476 299.604 237.868 294.433C233.955 300.231 228.768 305.059 222.705 308.549C200.642 321.28 172.433 313.728 159.694 291.665C146.956 269.602 154.515 241.392 176.579 228.656C182.632 225.149 189.407 223.072 196.385 222.582C182.71 235.924 179.243 257.306 189.234 274.611Z"/><path fill="#099BFF" d="M242.624 244.64C259.929 254.631 281.311 251.164 294.655 237.486C294.164 244.464 292.086 251.237 288.579 257.29C275.848 279.351 247.631 286.91 225.57 274.174C203.508 261.437 195.947 233.23 208.686 211.163C212.175 205.099 217.003 199.913 222.802 196C217.636 214.397 225.319 234.647 242.624 244.64Z"/><path fill="#63BFFF" d="M273.873 191.987C293.855 191.987 310.64 178.295 315.356 159.779C318.421 166.068 320.01 172.974 320 179.97C320 205.445 299.348 226.097 273.873 226.097C248.398 226.097 227.746 205.445 227.746 179.97C227.738 172.974 229.328 166.068 232.396 159.779C237.106 178.295 253.891 191.987 273.873 191.987Z"/><path fill="#B7E1FD" d="M274.611 130.766C291.916 120.775 299.605 100.523 294.431 82.1315C300.23 86.0448 305.059 91.231 308.55 97.2943C321.281 119.358 313.729 147.567 291.665 160.305C269.602 173.044 241.393 165.484 228.656 143.421C225.149 137.368 223.072 130.593 222.582 123.614C235.924 137.29 257.305 140.757 274.611 130.766Z"/><path fill="#F0F5F4" d="M244.638 77.3767C254.631 60.0718 251.164 38.6893 237.487 25.3457C244.469 25.8344 251.248 27.9126 257.305 31.4216C279.366 44.1526 286.925 72.3692 274.187 94.4307C261.449 116.492 233.239 124.053 211.178 111.315C205.114 107.825 199.927 102.997 196.013 97.1983C214.397 102.37 234.647 94.6816 244.638 77.3767Z"/></svg>Lua</span><span class="cap">Autonomous revenue teams</span></div>
+    <div class="center">
+      <h1 id="start-h">Name your number. Meet the team built for it.</h1>
+      <p class="lead-in">Lua builds autonomous agent fleets around your actual business.</p>
+      <form class="ask" id="ask" novalidate>
+        <label for="site0"><span class="cap">Your website</span><input id="site0" type="text" inputmode="url" autocomplete="url" placeholder="yourcompany.com"></label>
+        <span class="sep" aria-hidden="true"></span>
+        <label for="goal0"><span class="cap">Your number</span><input id="goal0" type="text" placeholder="$2m by December"></label>
+        <input id="company" name="company" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px">
+        <button class="pill" type="submit" id="go">Meet my team</button>
+      </form>
+      <p class="reply" id="reply0" aria-live="polite"></p>
+      </div>
+
+    <section class="bp" id="bp" aria-labelledby="bp-h">
+      <div class="bp-head">
+        <h2 id="bp-h">The revenue engine built around you.</h2>
+        <p class="cap"><span id="bp-count"></span></p>
+      </div>
+      <div class="bp-chips bp-lens" id="bp-lens" role="group" aria-label="Revenue motions"></div>
+      <div class="bp-map" id="bp-map">
+        <svg class="bp-lines" id="bp-lines" aria-hidden="true"><g id="bp-base"></g><g id="bp-on"></g></svg>
+        <div class="bp-top" id="bp-top"></div>
+        <div class="bp-org" id="bp-org"></div>
+      </div>
+      <div class="bp-read" id="bp-read" aria-live="polite"></div>
+      <div class="bp-kit">
+        <span class="cap">Under every team</span>
+        <div class="bp-chips" id="bp-kit" role="group" aria-label="The kit under every team"></div>
+      </div>
+      <div class="bp-key" aria-hidden="true">
+        <span><i class="disc"></i><i class="pring"></i>An agent, and the person it works with</span>
+        <span><i class="k core"></i>Always on</span>
+        <span><i class="k opt"></i>Optional</span>
+        <span class="bp-honest">The library as written. Not all of it runs yet.</span>
+      </div>
+    </section>
+  </div>
+</section>
+
+<section class="stage build" id="build" aria-label="Your team being built">
+  <div class="wrap">
+    <div class="top"><span class="brand"><svg class="logo" viewBox="-1 -1 324 324" aria-hidden="true"><path fill="#FFDEB1" d="M191.988 46.1268C191.988 26.1447 178.296 9.36016 159.781 4.64416C166.069 1.57861 172.975 -0.00988396 179.971 4.62724e-05C205.446 4.62724e-05 226.098 20.6519 226.098 46.1268C226.098 71.6017 205.446 92.2535 179.971 92.2535C172.975 92.2635 166.069 90.6751 159.781 87.6095C178.294 82.8935 191.988 66.1089 191.988 46.1268Z"/><path fill="#FFB85C" d="M130.766 45.3889C120.77 28.084 100.524 20.3956 82.1322 25.5673C86.0453 19.7683 91.2315 14.9399 97.2951 11.4507C119.357 -1.28032 147.568 6.2716 160.306 28.3349C173.044 50.3983 165.483 78.6076 143.422 91.3441C137.368 94.8508 130.594 96.9283 123.615 97.418C137.291 84.0763 140.758 62.6938 130.766 45.3889Z"/><path fill="#FF900B" d="M77.3768 75.3658C60.07 65.3729 38.6893 68.8397 25.3458 82.5173C25.8352 75.5379 27.9127 68.7627 31.4197 62.7086C44.1507 40.6471 72.3674 33.0879 94.4289 45.8262C116.49 58.5646 124.05 86.7738 111.313 108.835C107.823 114.899 102.994 120.085 97.1947 123.998C102.37 105.603 94.6817 85.3532 77.3768 75.3658Z"/><path fill="#FF3927" d="M46.1268 128.013C26.1429 128.013 9.36009 141.705 4.64409 160.221C1.57854 153.932 -0.00988397 147.026 4.62746e-05 140.03C4.62746e-05 114.555 20.6519 93.9034 46.1268 93.9034C71.6017 93.9034 92.2536 114.555 92.2536 140.03C92.2626 147.026 90.6743 153.932 87.6096 160.221C82.8936 141.705 66.109 128.013 46.1268 128.013Z"/><path fill="#FC115E" d="M45.389 189.234C28.0822 199.225 20.3975 219.477 25.5637 237.869C19.7647 233.955 14.9363 228.769 11.4471 222.706C-1.28761 200.646 6.27165 172.433 28.3313 159.695C50.391 146.956 78.604 154.516 91.3405 176.579C94.8473 182.632 96.9248 189.407 97.4145 196.386C84.0765 182.71 62.6939 179.243 45.389 189.234Z"/><path fill="#F632A1" d="M75.3607 242.623C65.3696 259.93 68.8365 281.31 82.5122 294.654C75.5335 294.164 68.7589 292.087 62.7054 288.58C40.6438 275.849 33.0846 247.632 45.8211 225.571C58.5576 203.509 86.7706 195.95 108.832 208.687C114.896 212.176 120.082 217.004 123.995 222.803C105.603 217.63 85.3536 225.318 75.3607 242.623Z"/><path fill="#B751DD" d="M128.011 273.873C128.011 293.857 141.705 310.64 160.22 315.356C153.932 318.421 147.026 320.009 140.03 320C114.555 320 93.903 299.348 93.903 273.873C93.903 248.398 114.555 227.747 140.03 227.747C147.026 227.738 153.931 229.326 160.22 232.391C141.705 237.107 128.011 253.891 128.011 273.873Z"/><path fill="#6074FB" d="M189.234 274.611C199.225 291.916 219.476 299.604 237.868 294.433C233.955 300.231 228.768 305.059 222.705 308.549C200.642 321.28 172.433 313.728 159.694 291.665C146.956 269.602 154.515 241.392 176.579 228.656C182.632 225.149 189.407 223.072 196.385 222.582C182.71 235.924 179.243 257.306 189.234 274.611Z"/><path fill="#099BFF" d="M242.624 244.64C259.929 254.631 281.311 251.164 294.655 237.486C294.164 244.464 292.086 251.237 288.579 257.29C275.848 279.351 247.631 286.91 225.57 274.174C203.508 261.437 195.947 233.23 208.686 211.163C212.175 205.099 217.003 199.913 222.802 196C217.636 214.397 225.319 234.647 242.624 244.64Z"/><path fill="#63BFFF" d="M273.873 191.987C293.855 191.987 310.64 178.295 315.356 159.779C318.421 166.068 320.01 172.974 320 179.97C320 205.445 299.348 226.097 273.873 226.097C248.398 226.097 227.746 205.445 227.746 179.97C227.738 172.974 229.328 166.068 232.396 159.779C237.106 178.295 253.891 191.987 273.873 191.987Z"/><path fill="#B7E1FD" d="M274.611 130.766C291.916 120.775 299.605 100.523 294.431 82.1315C300.23 86.0448 305.059 91.231 308.55 97.2943C321.281 119.358 313.729 147.567 291.665 160.305C269.602 173.044 241.393 165.484 228.656 143.421C225.149 137.368 223.072 130.593 222.582 123.614C235.924 137.29 257.305 140.757 274.611 130.766Z"/><path fill="#F0F5F4" d="M244.638 77.3767C254.631 60.0718 251.164 38.6893 237.487 25.3457C244.469 25.8344 251.248 27.9126 257.305 31.4216C279.366 44.1526 286.925 72.3692 274.187 94.4307C261.449 116.492 233.239 124.053 211.178 111.315C205.114 107.825 199.927 102.997 196.013 97.1983C214.397 102.37 234.647 94.6816 244.638 77.3767Z"/></svg>Lua</span><span class="acts"><button class="link cap" id="skip" type="button">Skip to the team</button><button class="link cap" id="again" type="button">Start over</button></span></div>
+
+    <div class="goal" id="goal"><span class="cap" id="g-site"></span><b id="g-num"></b></div>
+
+    <div class="story" id="story">
+      <article class="card" id="card" aria-live="polite">
+        <div class="card-top"><span class="cap"><span class="spin" aria-hidden="true"></span><span id="c-phase"></span></span><span class="cap num" id="clock">0 s</span></div>
+        <div class="card-main">
+          <div id="c-main"><h2 id="c-title"></h2><div id="c-body" style="margin-top:10px"></div></div>
+          <div class="skel" id="c-skel" aria-hidden="true"><p id="c-work"></p><i></i><i></i><i></i></div>
+        </div>
+        <span class="prog" id="c-prog" aria-hidden="true"></span>
+      </article>
+      <div class="finale" id="finale">
+        <h1 id="fin-h"></h1>
+        <p class="sub" id="fin-sub"></p>
+        <div class="closer" id="closer">
+          <form class="claim" id="claim" novalidate>
+            <label for="email" style="position:absolute;left:-9999px">Your work email</label>
+            <input id="email" type="email" autocomplete="email" placeholder="you@company.com">
+            <button class="pill" type="submit">Claim this team</button>
+          </form>
+          <label class="consent" for="consent" id="consent-row"><input id="consent" type="checkbox"><span>Lua can keep my email and this plan to contact me about it. <a href="https://heylua.ai/legal/privacy/" target="_blank" rel="noopener">Privacy</a></span></label>
+          <div class="booked" id="booked" hidden><p id="booked-t"></p><a class="pill" id="book" target="_blank" rel="noopener" hidden>Book a time with Lorcan</a></div>
+          <p class="reply" id="reply" aria-live="polite"></p>
+          <p class="floor" id="floor"></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="chart" id="chart"><svg id="loopsvg" aria-hidden="true"></svg>
+      <div class="line v" id="trunk"></div>
+      <div class="node cro" id="cro">
+        <div class="pair"><span class="orbit"><i></i></span><span class="disc"></span><span class="pring"></span></div>
+        <h3>CRO</h3>
+        <span class="who"></span><div class="blocks"></div>
+      </div>
+      <div class="line v" id="trunk2"></div>
+      <div class="rail-wrap"><div class="line rail" id="rail"></div></div>
+      <div class="agents" id="agents"></div>
+      <div class="loopkey" id="loopkey">
+        <span><i class="k o"></i>Each agent tries several approaches and narrows to what works</span>
+        <span><i class="k u"></i>Every outcome flows up to the weekly forecast</span>
+        <span><i class="k d"></i>The CRO re-ranks the work, inside ranges a person approved</span>
+      </div>
+      <p class="cap hint" id="found"></p>
+      <p class="cap hint" id="hint"></p>
+    </div>
+
+    <div class="meter" id="meter">
+      <div class="meter-row"><span class="cap" id="m-by"></span><b id="readout"></b></div>
+      <div class="track" id="m-track" role="img"><span class="faint" id="faint"></span><span class="solid" id="solid"></span><span class="tick" id="m-tick"></span></div>
+      <div class="scale cap"><span style="left:0" id="m-zero"></span><span class="g" id="m-goal"></span><span style="left:100%" id="m-max"></span></div>
+    </div>
+    <div class="slot">
+      
+    </div>
+  </div>
+</section>
+
+<aside class="at-work" id="atwork" role="status"></aside>
+
+<div class="flood" id="flood" aria-hidden="true"><span id="f-by"></span><b id="f-range"></b><span id="f-goal"></span></div>
+
+<section class="proof result" aria-labelledby="read-h">
+  <div class="wrap">
+    <div class="lede">
+      <h2 id="read-h">First, it read the business.</h2>
+      <div class="copy" id="r-copy"></div>
+    </div>
+    <div class="claims" id="r-claims"></div>
+    <div class="rivals" id="r-rivals"></div>
+  </div>
+</section>
+<section class="proof result" aria-labelledby="rank-h">
+  <div class="wrap">
+    <div class="lede">
+      <h2 id="rank-h">Then it ranked the work by money.</h2>
+      <div class="copy" id="r-money"></div>
+    </div>
+    <div class="motions" id="r-motions"></div>
+    <div class="dayone" id="r-week"></div>
+  </div>
+</section>
+<section class="proof result" aria-label="Your engine in the library">
+  <div class="wrap" id="yours"></div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Lua reads the website you name and writes this plan with AI, from public pages only. Figures are the site&rsquo;s own claims, competitors are described in their own words, and ranges are estimates, not promises. We keep the website, your number and the plan. Your email is kept only if you claim the team. Nothing on this page sends anything to anyone. <a href="https://heylua.ai/legal/privacy/" target="_blank" rel="noopener">Privacy</a></p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var WEBHOOK = 'https://webhook.heylua.ai/baseAgent_agent_1793731468152_9m6sq8x5b/landing';
+  var BOOKING_URL = 'https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ3vg46QiX-VGptoPaNA991UbFPpNtZRCtRZzltNilwxqiRLZuv_3cG94L-2VyRqzO_Kj31Qp_pw'; // Lorcan's booking page
+  var POLL_MS = 2500, STALL_MS = 240000;
+  function $(id) { return document.getElementById(id); }
+  function stage(s) { root.dataset.stage = s; window.scrollTo(0, 0); }
+  function host(v) { return (v || '').trim().replace(/^https?:\/\//i, '').replace(/^www\./i, '').replace(/\/.*$/, '').toLowerCase(); }
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function call(body) {
+    return fetch(WEBHOOK, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) }).then(function (r) { return r.json(); });
+  }
+
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches || !window.gsap;
+  var cro = $('cro'), card = $('card'), chart = $('chart'), atwork = $('atwork'), svg = $('loopsvg'), agentsEl = $('agents');
+  var agents = [], drops = [], nodes = [cro], work = [], openNode = null;
+
+  // --- money, in the visitor's own currency
+  var cur = '$';
+  function currency(typed) {
+    if (/£|gbp|pound/i.test(typed)) return '£';
+    if (/€|eur/i.test(typed)) return '€';
+    return '$';
+  }
+  function short(n) {
+    if (n >= 1e6) return (n / 1e6).toFixed(1).replace(/\.0$/, '') + 'm';
+    if (n >= 1e3) return Math.round(n / 1e3) + 'k';
+    return String(Math.round(n));
+  }
+  function money(n) { return cur + short(n); }
+  function range(lo, hi) {
+    if (lo >= 1e6 && hi >= 1e6) return cur + (lo / 1e6).toFixed(1) + '–' + (hi / 1e6).toFixed(1) + 'm';
+    return cur + short(lo) + '–' + short(hi);
+  }
+  function longDate(d) {
+    var t = new Date(d + 'T12:00:00Z');
+    return isNaN(t) ? d : t.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+  }
+
+  // --- the live run
+  var run = null;
+  function fresh() { return { key: null, business: '', goal: '', seen: {}, queue: [], plan: null, failed: false, first: 0, ready: 0, lastNew: Date.now(), misses: 0, timer: null, clock: null, started: Date.now(), croQueued: false, playing: false, finished: false, rest: [] }; }
+  function stop() { if (run) { clearTimeout(run.timer); clearInterval(run.clock); } }
+
+  function poll() {
+    if (!run || run.plan || run.failed) return;
+    var me = run;
+    call({ action: 'feed', key: me.key }).then(function (d) {
+      if (me !== run) return;
+      if (!d.ok) throw new Error(d.message || 'feed');
+      me.misses = 0;
+      take(d);
+    }).catch(function () {
+      if (me !== run) return;
+      me.misses++;
+      if (me.misses >= 4) workLine('Lost the connection for a moment. Still trying.');
+    }).then(function () {
+      if (me !== run || me.plan || me.failed) return;
+      if (Date.now() - me.lastNew > STALL_MS) { fail('This run went quiet and did not finish.'); return; }
+      me.timer = setTimeout(poll, POLL_MS);
+    });
+  }
+
+  function take(d) {
+    (d.events || []).forEach(function (e) {
+      var id = e.at + '|' + e.title;
+      if (run.seen[id]) return;
+      run.seen[id] = 1; run.lastNew = Date.now();
+      if (!run.first) run.first = e.at;
+      if (e.kind === 'ready') run.ready = e.at;
+      read(e);
+    });
+    if (d.plan && !run.plan) gotPlan(d.plan);
+    pump();
+  }
+
+  function lead(s) { return '<p class="lead">' + esc(s) + '</p>'; }
+  function list(items) { return '<ul>' + items.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>'; }
+  function sentences(s, n) { return String(s || '').split(/(?<=[.!?])\s+(?=[A-Z0-9"\u201c(])/).slice(0, n).join(' ').trim(); }
+  function claimText(s) { return String(s).replace(/^(claim|claimed|their claim)\s*:\s*/i, ''); }
+
+  var phaseName = '';
+  function workLine(s) { $('c-work').textContent = s; }
+  function beat(title, html, extra) { var b = { ph: phaseName, title: title, html: html }; for (var k in extra || {}) b[k] = extra[k]; run.queue.push(b); }
+
+  // Turns one event from the run into what the visitor sees. Anything not named here stays in the record only.
+  function read(e) {
+    if (e.kind === 'error') { fail(e.detail || 'The run stopped.'); return; }
+    if (e.kind === 'phase') {
+      phaseName = e.title;
+      if (e.phase === 'library') beat('Opening the library', lead(e.detail));
+      if (e.phase === 'design' && !run.croQueued) {
+        run.croQueued = true;
+        beat('First hire: a CRO', hire('Ranks the work by money, runs the weekly forecast and signs off pricing and terms.', 'It decides how ' + run.business + ' sells and ranks the work by money, before anyone else is hired.', 'Why', 'Your CRO'), { node: cro });
+        beat('Then the fundamentals, in every team', list(['Strategist: who to sell to and how each segment sells', 'Researcher: dated, sourced findings on accounts and buying signals', 'RevOps: a true CRM record, a fresh funnel and every lead routed']));
+      }
+      workLine(e.title);
+      return;
+    }
+    if (e.kind === 'thinking' && e.phase === 'design') { workLine(e.title); return; }
+    if (e.title === 'What it sells' && e.data && e.data.name) run.business = e.data.name;
+    if (e.title === 'What it sells') return beat('What ' + run.business + ' sells', lead(sentences(e.detail, 2)));
+    if (e.title === 'Who buys') return beat('Who buys', list(String(e.detail).split(' · ')));
+    if (e.title === 'How it prices') return beat('How it prices', lead(sentences(e.detail, 2)));
+    if (/pieces of proof on the site$/.test(e.title)) return beat(e.title, list(String(e.detail).split(' · ').map(claimText)) + '<p class="cap src">Each one is ' + esc(run.business) + '’s own claim</p>');
+    if (e.phase === 'competitors' && e.kind === 'found') return beat(e.title, lead(sentences(String(e.detail).replace(/^Their own words:\s*/, ''), 2)));
+    if (e.phase === 'design' && e.kind === 'decision' && e.data && e.data.segment) return beat('How ' + run.business + ' should sell', '<p class="lead"><b>' + esc(e.data.segment) + '</b></p><p>' + esc(e.data.model) + '. ' + esc(e.data.why) + '</p>');
+  }
+
+  function hire(does, why, whyLabel, who, amount, by) {
+    return '<dl class="facts2"><dt>What it does</dt><dd>' + esc(does) + '</dd><dt>' + esc(whyLabel) + '</dt><dd>' + esc(why) + '</dd><dt>Works with</dt><dd class="p">' + esc(who) + '</dd>' + (amount ? '<dt>Can contract by ' + esc(by) + '</dt><dd class="m">' + esc(amount) + '</dd>' : '') + '</dl>';
+  }
+
+  function assignment(p, m) {
+    var a = p.engine && p.engine.assignments ? p.engine.assignments.filter(function (x) { return x.motion === m.motion; })[0] : null;
+    a = a || { motion: m.motion, playbooks: [], does: null, seat: null };
+    if (!a.short) a.short = m.motion.split(/\s+/).slice(0, 3).join(' ');
+    return a;
+  }
+  function playName(id) { var B = window.BP && BP.data; return B && B.plays[id] ? B.plays[id].n : id; }
+
+  // --- the plan arrives: seats for the chart, a hire for each motion, ranked by money
+  function gotPlan(p) {
+    run.plan = p;
+    var ranked = (p.motions || []).slice().sort(function (a, b) { return (b.contractableHigh || 0) - (a.contractableHigh || 0); });
+    var seated = ranked.slice(0, 8);
+    buildChart(p, seated);
+    scaleMeter(p);
+    var by = longDate(p.targetDate);
+    seated.forEach(function (m, i) {
+      var a = assignment(p, m);
+      run.queue.push({ ph: (m.bet ? 'A longer bet' : 'Hiring, ranked by money') + ' \u00b7 ' + (i + 1) + ' of ' + seated.length, title: a.short, node: agents[i], lo: m.contractableLow || 0, hi: m.contractableHigh || 0,
+        html: hire(a.does || m.motion, m.why, i === 0 ? 'Why it ranks first' : 'Why', m.owner + ' · ' + m.hoursPerWeek + ' h/wk', range(m.contractableLow || 0, m.contractableHigh || 0), by) });
+    });
+    run.rest = ranked.slice(8);
+    renderResults(p, ranked);
+    $('skip').style.visibility = '';
+  }
+
+  function buildChart(p, seated) {
+    agentsEl.textContent = ''; agents = []; drops = []; work = [];
+    nodes = [cro];
+    agentsEl.style.setProperty('--n', seated.length);
+    var croPeople = (p.people || []).filter(function (x) { return /cro|revenue|sales|founder|ceo/i.test(x.role); }).slice(0, 2);
+    var useP = croPeople.length ? croPeople : (p.people || []).slice(0, 1);
+    cro.querySelector('.who').textContent = useP.map(function (x) { return x.role + ' ' + x.hoursPerWeek + ' h/wk'; }).join(' · ');
+    var croPlays = p.engine && p.engine.cro ? p.engine.cro : [];
+    blocks(cro, croPlays);
+    var fp = p.engine && p.engine.foundations ? p.engine.foundations : [];
+    $('found').textContent = fp.length ? 'The fundamentals under every team: ' + fp.map(playName).join(' \u00b7 ') : '';
+    work.push(workFor('CRO', 'Works with ' + (useP.map(function (x) { return x.role; }).join(' and ') || 'your lead'), croPlays, 'It ranks the work by money and can restrict any agent. It raises one only inside a range a person approved.'));
+    seated.forEach(function (m) {
+      var a = assignment(p, m), col = document.createElement('div'); col.className = 'col';
+      col.innerHTML = '<div class="line v drop"></div><div class="node agent"><div class="pair"><span class="orbit"><i></i></span><span class="disc"></span><span class="pring"></span></div><h3></h3><span class="who"></span><span class="amt"></span><div class="blocks"></div></div>';
+      var n = col.querySelector('.node');
+      n.querySelector('h3').textContent = a.short;
+      n.querySelector('.who').textContent = (m.bet ? 'Bet \u00b7 ' : '') + m.owner + ' \u00b7 ' + m.hoursPerWeek + ' h';
+      n.querySelector('.amt').textContent = range(m.contractableLow || 0, m.contractableHigh || 0);
+      blocks(n, a.playbooks);
+      agentsEl.appendChild(col);
+      agents.push(n); drops.push(col.querySelector('.drop')); nodes.push(n);
+      work.push(workFor(a.short, 'Works with ' + m.owner, a.playbooks, m.why));
+    });
+    nodes.forEach(bindNode);
+    if (!reduce) { gsap.set(agents, { autoAlpha: 0 }); gsap.set(drops, { scaleY: 0 }); }
+  }
+  function blocks(n, ids) {
+    var w = n.querySelector('.blocks'); w.textContent = '';
+    ids.slice(0, 3).forEach(function (id) { var s = document.createElement('span'); s.textContent = playName(id); w.appendChild(s); });
+  }
+  function workFor(name, withWho, ids, why) {
+    var B = window.BP && BP.data, keeps = [];
+    ids.forEach(function (id) { var q = B && B.plays[id]; if (q && q.k && q.k[0] && keeps.indexOf(q.k[0]) < 0 && keeps.length < 2) keeps.push(q.k[0]); });
+    return { name: name, with: withWho, steps: ids.map(function (id) { return [playName(id)]; }).concat(keeps.map(function (k) { return [k, 1]; })), why: why };
+  }
+
+  // --- the money bar
+  var st = { lo: 0, hi: 0 }, MAX = 1;
+  function bar() {
+    $('solid').style.width = (st.lo / MAX * 100) + '%';
+    $('faint').style.width = (st.hi / MAX * 100) + '%';
+    $('readout').textContent = st.hi ? range(st.lo, st.hi) : cur + '0';
+  }
+  function scaleMeter(p) {
+    var goal = p.gap.goal || p.goalAmount || 0, high = p.gap.high || 0;
+    MAX = Math.max(goal * 1.5, high * 1.1, 1);
+    var by = longDate(p.targetDate), pct = goal / MAX * 100;
+    $('m-by').textContent = 'Can contract by ' + by + ' · estimate';
+    $('m-zero').textContent = cur + '0';
+    $('m-tick').style.left = pct + '%';
+    $('m-goal').style.left = pct + '%'; $('m-goal').textContent = money(goal) + ' goal';
+    $('m-max').textContent = money(MAX);
+    $('m-track').setAttribute('aria-label', 'Estimated ' + range(p.gap.low, p.gap.high) + ' against a ' + money(goal) + ' goal');
+    $('f-by').textContent = 'Estimate, by ' + by;
+    $('f-range').textContent = range(p.gap.low, p.gap.high);
+    $('f-goal').textContent = 'against a ' + money(goal) + ' goal';
+    bar();
+  }
+
+  // --- the card player: real events go in, and each gets long enough on screen to be read
+  var tl = null, seen = 0, shownLo = 0, shownHi = 0;
+  function fill(s) { $('c-phase').textContent = s.ph; $('c-title').textContent = s.title; $('c-body').innerHTML = s.html; }
+  function waiting() {
+    if (run.failed) return;
+    $('c-phase').textContent = phaseName || 'Starting';
+    if (reduce) { $('c-main').style.visibility = 'hidden'; $('c-skel').style.visibility = 'visible'; card.style.visibility = 'visible'; return; }
+    gsap.set('#c-main', { autoAlpha: 0 }); gsap.set('#c-skel', { autoAlpha: 1 }); gsap.set(card, { autoAlpha: 1, x: 0, y: 0, scale: 1 }); gsap.set('#c-prog', { scaleX: 0 });
+  }
+  function pump() {
+    if (!run || run.playing || run.failed || run.finished) return;
+    var s = run.queue.shift();
+    if (!s) { if (run.plan) finale(); else waiting(); return; }
+    run.playing = true;
+    var me = run;
+    play(s, function () { if (me !== run) return; me.playing = false; pump(); });
+  }
+  function play(s, done) {
+    if (reduce) {
+      fill(s); $('c-main').style.visibility = 'visible'; $('c-skel').style.visibility = 'hidden'; card.style.visibility = 'visible';
+      if (s.node && s.node !== cro) { shownLo += s.lo; shownHi += s.hi; st.lo = shownLo; st.hi = shownHi; bar(); }
+      setTimeout(done, 1500);
+      return;
+    }
+    var hold = run.queue.length > 6 ? 1.7 : 2.6, SK = 0.45;
+    tl = gsap.timeline({ defaults: { ease: 'expo.out' }, onComplete: done });
+    tl.call(fill, [s], 0)
+      .fromTo(card, { autoAlpha: 0, x: 0, y: 14, scale: 1 }, { autoAlpha: 1, x: 0, y: 0, scale: 1, duration: 0.3, immediateRender: false }, 0)
+      .set('#c-main', { autoAlpha: 0 }, 0).set('#c-skel', { autoAlpha: 1 }, 0)
+      .fromTo('#c-prog', { scaleX: 0 }, { scaleX: 1, duration: hold + SK, ease: 'none', immediateRender: false }, 0)
+      .to('#c-skel', { autoAlpha: 0, duration: 0.15, ease: 'none' }, SK)
+      .to('#c-main', { autoAlpha: 1, duration: 0.25, ease: 'power1.out' }, SK + 0.05);
+    var A = hold + SK;
+    if (!s.node) { tl.to(card, { autoAlpha: 0, y: -10, duration: 0.18, ease: 'power2.in' }, A); return; }
+    var isCro = s.node === cro, disc = s.node.querySelector('.disc');
+    if (isCro) {
+      tl.to('#trunk', { scaleY: 1, duration: 0.4, ease: 'power2.inOut' }, A);
+    } else {
+      if (seen === 0) {
+        tl.to('#meter', { autoAlpha: 1, duration: 0.5 }, A)
+          .to('#trunk2', { scaleY: 1, duration: 0.25, ease: 'power2.inOut' }, A)
+          .to('#rail', { scaleX: 1, duration: 0.4, ease: 'power2.inOut' }, A + 0.1);
+      }
+      tl.to(drops[seen], { scaleY: 1, duration: 0.3, ease: 'power2.out' }, A + 0.2);
+      shownLo += s.lo; shownHi += s.hi;
+      tl.to(st, { lo: shownLo, hi: shownHi, duration: 0.7, ease: 'power3.out', onUpdate: bar }, A + 0.55);
+      seen++;
+    }
+    tl.to(card, {
+      x: function () { var c = card.getBoundingClientRect(), d = disc.getBoundingClientRect(); return d.left + d.width / 2 - (c.left + c.width / 2); },
+      y: function () { var c = card.getBoundingClientRect(), d = disc.getBoundingClientRect(); return d.top + d.height / 2 - (c.top + c.height / 2); },
+      scale: 0.06, autoAlpha: 0, duration: 0.5, ease: 'power3.in'
+    }, A)
+      .fromTo(s.node, { autoAlpha: 0, scale: 0.7 }, { autoAlpha: 1, scale: 1, duration: 0.45, immediateRender: false }, A + 0.35);
+  }
+
+  function seconds() { return run.first && run.ready ? Math.round((run.ready - run.first) / 1000) : Math.round((Date.now() - run.started) / 1000); }
+  function finishText() {
+    var p = run.plan, n = seconds(), bets = (p.motions || []).filter(function (m) { return m.bet; }).length;
+    clearInterval(run.clock);
+    $('clock').textContent = n + ' s';
+    $('fin-h').textContent = 'Your new workforce. Designed in ' + n + ' seconds.';
+    $('fin-sub').textContent = (p.gap.shortHigh ? 'Short of the goal by ' + money(p.gap.shortHigh) + ' even at best, and the plan says so. ' : '') + 'Every agent works beside one of your people.' + (bets ? ' ' + bets + ' of them ' + (bets > 1 ? 'are longer bets' : 'is a longer bet') + ' to close the gap.' : '') +
+      (run.rest.length ? ' ' + run.rest.length + ' smaller motion' + (run.rest.length > 1 ? 's are' : ' is') + ' in the plan below.' : '');
+    $('floor').textContent = 'Drafted by AI from public pages. We have not seen your pipeline or your customers, so the roles are suggestions and the ranges are a first guess, sized against your number. A person sends ' + (p.personSendsAtValue ? 'anything at or above ' + money(p.personSendsAtValue) : 'everything') + '.';
+    root.classList.add('has-results');
+    if (window.BP) BP.focus(p.engine);
+  }
+  function finale() {
+    run.finished = true;
+    finishText();
+    if (reduce) { finalState(); return; }
+    var E = 0.2, f = gsap.timeline({ defaults: { ease: 'expo.out' } });
+    tl = f;
+    f.call(function () { $('trunk').classList.add('lit'); }, null, E)
+      .fromTo(cro.querySelector('.disc'), { scale: 1 }, { scale: 1.5, duration: 0.18, yoyo: true, repeat: 1, ease: 'power2.out', immediateRender: false }, E + 0.12)
+      .call(function () { $('trunk2').classList.add('lit'); $('rail').classList.add('lit'); }, null, E + 0.3)
+      .call(function () { drops.forEach(function (d) { d.classList.add('lit'); }); }, null, E + 0.55)
+      .fromTo(agents.map(function (a) { return a.querySelector('.disc'); }), { scale: 1 }, { scale: 1.5, duration: 0.18, yoyo: true, repeat: 1, ease: 'power2.out', immediateRender: false }, E + 0.65);
+    nodes.forEach(function (n, i) { f.call(function () { n.classList.add('lit-p'); }, null, E + 1.1 + i * 0.14); });
+    var F = E + 1.9;
+    f.set(card, { autoAlpha: 0 }, F)
+      .to('#flood', { scaleY: 1, duration: 0.55, ease: 'expo.inOut' }, F)
+      .fromTo('#flood > *', { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.5, stagger: 0.08, immediateRender: false }, F + 0.35)
+      .call(function () { $('skip').style.visibility = 'hidden'; $('story').classList.add('done'); }, null, F + 0.5)
+      .to('#flood > *', { autoAlpha: 0, duration: 0.25 }, F + 1.2)
+      .set('#flood', { transformOrigin: '50% 0%' }, F + 1.3)
+      .to('#flood', { scaleY: 0, duration: 0.6, ease: 'expo.inOut' }, F + 1.35)
+      .fromTo('#finale', { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, duration: 0.9, immediateRender: false }, F + 1.7)
+      .fromTo('#closer', { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.8, immediateRender: false }, F + 2.0)
+      .call(alive, null, F + 2.1);
+  }
+
+  // The finished state, for Skip, for reduced motion and for a visitor coming back to their run.
+  function finalState() {
+    if (!run || !run.plan) return;
+    run.finished = true; run.queue = [];
+    if (tl) tl.kill();
+    finishText();
+    var lines = [$('trunk'), $('trunk2'), $('rail')].concat(drops);
+    if (window.gsap) {
+      gsap.set(nodes.concat(lines), { clearProps: 'all' });
+      gsap.set('#goal, #meter', { clearProps: 'all' });
+      gsap.set('#flood', { scaleY: 0 });
+      gsap.set(card, { autoAlpha: 0 });
+      gsap.set('#finale, #closer', { autoAlpha: 1, y: 0 });
+    } else {
+      card.style.visibility = 'hidden'; $('finale').style.visibility = 'visible'; $('closer').style.visibility = 'visible';
+    }
+    lines.forEach(function (l) { l.classList.add('lit'); });
+    nodes.forEach(function (n) { n.classList.add('lit-p'); n.querySelector('.disc').classList.remove('think'); });
+    st.lo = run.plan.gap.low; st.hi = run.plan.gap.high; bar();
+    $('story').classList.add('done');
+    $('skip').style.visibility = 'hidden';
+    alive();
+  }
+
+  function fail(msg) {
+    run.failed = true;
+    clearInterval(run.clock); clearTimeout(run.timer);
+    if (tl) tl.kill();
+    $('c-phase').textContent = 'This run stopped';
+    $('c-title').textContent = 'We couldn’t finish ' + run.business + '’s team';
+    $('c-body').innerHTML = lead(sentences(msg, 2)) + '<p class="cap src">Nothing was sent to anyone. Some sites block automated readers, and this is what that looks like.</p><p><button class="pill" type="button" id="retry">Try another website</button></p>';
+    if (window.gsap) { gsap.set(card, { autoAlpha: 1, x: 0, y: 0, scale: 1 }); gsap.set('#c-main', { autoAlpha: 1 }); gsap.set('#c-skel', { autoAlpha: 0 }); gsap.set('#c-prog', { scaleX: 0 }); }
+    else { card.style.visibility = 'visible'; $('c-main').style.visibility = 'visible'; $('c-skel').style.visibility = 'hidden'; }
+    $('skip').style.visibility = 'hidden';
+    $('retry').addEventListener('click', again);
+  }
+
+  // --- the page below the chart, from the plan
+  function renderResults(p, ranked) {
+    var f = p.profile || {}, proof = (f.proof || []).map(claimText), rivals = (p.competitors || []).filter(function (c) { return c.read; });
+    var pages = (f.pagesRead || []).length;
+    $('r-copy').innerHTML = '<p><strong>' + esc(sentences(f.summary, 2)) + '</strong></p>' + (f.priceBasis ? '<p>' + esc(sentences(f.priceBasis, 2)) + '</p>' : '') +
+      '<div class="facts cap"><span>' + pages + ' page' + (pages === 1 ? '' : 's') + ' read</span><span>' + proof.length + ' proof points</span><span>' + rivals.length + ' competitors</span></div>';
+    var figure = /[$£€]?\d/;
+    var picks = proof.filter(function (s) { return figure.test(s); }).concat(proof.filter(function (s) { return !figure.test(s); })).slice(0, 3);
+    $('r-claims').innerHTML = picks.map(function (s) {
+      var m = s.match(/[$£€]\d[\d,.]*\s?(?:[BMKbmk](?![a-z])|bn|million|billion)?\+?|\d[\d,.]*\s?(?:%|\+|[BMK](?![a-z])|million|billion)/);
+      return '<div class="glass"><span class="cap">' + esc(run.business) + '’s claim</span>' + (m ? '<span class="big">' + esc(m[0].trim()) + '</span>' : '') + '<p>' + esc(s) + '</p></div>';
+    }).join('');
+    $('r-rivals').innerHTML = rivals.slice(0, 3).map(function (c) { return '<div><span class="cap">In their own words</span><h3>' + esc(c.name) + '</h3><p>' + esc(sentences(c.positioning, 2)) + '</p></div>'; }).join('');
+    var by = longDate(p.targetDate), top = Math.max.apply(null, ranked.map(function (m) { return m.contractableHigh || 0; }).concat(1));
+    $('r-money').innerHTML = '<p><strong>Not by what is easy to start.</strong> Each motion is sized by what can be signed before ' + esc(by) + ', and given to the role that should own it.</p><p>Low case ' + esc(money(p.gap.low)) + ', high case ' + esc(money(p.gap.high)) + ', against a goal of ' + esc(money(p.gap.goal)) + '. ' + (p.gap.shortHigh ? 'Even the high case falls short by ' + esc(money(p.gap.shortHigh)) + ', and the plan says so openly.' : p.gap.shortLow ? 'The goal is reachable near the high case, and the plan says so openly.' : 'The low case already reaches the goal.') + '</p>';
+    $('r-motions').innerHTML = ranked.map(function (m, i) {
+      var lo = m.contractableLow || 0, hi = m.contractableHigh || 0;
+      return '<div class="motion"><span class="cap">' + (i + 1) + '</span><div><h3>' + esc(m.motion) + '</h3><p class="cap who">' + (m.bet ? 'Longer bet &middot; ' : '') + esc(m.owner) + ' &middot; ' + esc(m.windowDays) + ' days</p></div><p class="why">' + esc(m.why) + '</p><div class="mbar"><span class="range">' + esc(range(lo, hi)) + '</span><div class="mtrack"><i style="left:' + (lo / top * 100) + '%;right:' + (100 - hi / top * 100) + '%"></i></div></div></div>';
+    }).join('');
+    $('r-week').innerHTML = (p.firstWeek || []).length ? '<strong>The first week:</strong>' + list(p.firstWeek.slice(0, 4)) + ((p.risks || []).length ? '<strong>What could stop it:</strong>' + list(p.risks.slice(0, 3)) : '') + ((p.questions || []).length ? '<strong>What we couldn\u2019t tell from your website, and would ask you first:</strong>' + list(p.questions.slice(0, 3)) : '') : '';
+  }
+
+  // --- each agent's panel: its real playbooks from the library, and what a person keeps
+  function dot(path, dur, begin, hollow, who) {
+    var c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    c.setAttribute('r', hollow ? 3 : 3.5);
+    c.setAttribute('fill', hollow ? '#fff' : '#2B2BFF');
+    c.setAttribute('stroke', '#2B2BFF'); c.setAttribute('stroke-width', hollow ? 1.5 : 0);
+    c.dataset.who = who;
+    var m = document.createElementNS('http://www.w3.org/2000/svg', 'animateMotion');
+    m.setAttribute('path', path); m.setAttribute('dur', dur + 's'); m.setAttribute('begin', begin + 's'); m.setAttribute('repeatCount', 'indefinite');
+    c.appendChild(m); svg.appendChild(c);
+  }
+  // Outcomes run up the real lines to the CRO; re-ranking runs back down them.
+  function drawLoops() {
+    svg.textContent = '';
+    if (innerWidth <= 760 || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var c = chart.getBoundingClientRect();
+    function mid(el) { var r = el.getBoundingClientRect(); return { x: r.left + r.width / 2 - c.left, y: r.top + r.height / 2 - c.top }; }
+    var top = mid(cro.querySelector('.disc')), railY = $('rail').getBoundingClientRect().top - c.top, trunkY = $('trunk').getBoundingClientRect().top - c.top;
+    dot('M' + top.x + ' ' + top.y + ' V' + trunkY, 1.8, 0, false, 0);
+    agents.forEach(function (a, i) {
+      var d = mid(a.querySelector('.disc'));
+      dot('M' + d.x + ' ' + d.y + ' V' + railY + ' H' + top.x + ' V' + top.y, 3.6, -i * 0.7, false, i + 1);
+      dot('M' + top.x + ' ' + top.y + ' V' + railY + ' H' + d.x + ' V' + d.y, 3.6, -(i * 0.7 + 1.8), true, i + 1);
+    });
+  }
+  function alive() {
+    chart.classList.add('alive');
+    $('hint').textContent = matchMedia('(hover: none)').matches ? 'Tap an agent to see its playbooks' : 'Hover an agent to see its playbooks';
+    drawLoops();
+  }
+  function dead() { closeWork(); chart.classList.remove('alive'); svg.textContent = ''; }
+  function closeWork() {
+    openNode = null;
+    atwork.classList.remove('show'); chart.classList.remove('focus');
+    nodes.forEach(function (n) { n.classList.remove('on'); n.setAttribute('aria-expanded', 'false'); });
+    [].forEach.call(svg.querySelectorAll('circle'), function (c) { c.classList.remove('on'); });
+  }
+  function openWork(i) {
+    if (!chart.classList.contains('alive') || openNode === nodes[i] || !work[i]) return;
+    closeWork();
+    var n = nodes[i], w = work[i];
+    openNode = n; n.classList.add('on'); n.setAttribute('aria-expanded', 'true'); chart.classList.add('focus');
+    [].forEach.call(svg.querySelectorAll('circle'), function (c) { if (i === 0 || +c.dataset.who === i) c.classList.add('on'); });
+    atwork.textContent = '';
+    function add(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text) e.textContent = text; atwork.appendChild(e); return e; }
+    add('span', 'cap', 'Its playbooks');
+    add('h3', null, w.name);
+    add('p', 'pw', w.with);
+    var ol = add('ol');
+    w.steps.forEach(function (s) { var li = document.createElement('li'); li.textContent = s[0]; li.className = 'past' + (s[1] ? ' p' : ''); ol.appendChild(li); });
+    var learn = add('p', 'learn'); var b = document.createElement('b'); b.textContent = 'Why it is here'; learn.appendChild(b); learn.appendChild(document.createTextNode(w.why));
+    add('span', 'cap note', 'From the library. Pink is what a person keeps. Nothing here has run.');
+    var r = n.getBoundingClientRect(), wd = Math.min(440, innerWidth - 32), h = atwork.offsetHeight;
+    var left = Math.max(16, Math.min(innerWidth - wd - 16, r.left + r.width / 2 - wd / 2));
+    var below = r.bottom + 10, above = r.top - h - 10;
+    atwork.style.left = left + 'px';
+    atwork.style.top = (below + h <= innerHeight - 8 || above < 8 ? Math.max(8, Math.min(below, innerHeight - h - 8)) : above) + 'px';
+    atwork.classList.add('show');
+  }
+  function bindNode(n) {
+    if (n.dataset.bound) return;
+    n.dataset.bound = '1';
+    function at() { return nodes.indexOf(n); }
+    n.setAttribute('tabindex', '0'); n.setAttribute('role', 'button'); n.setAttribute('aria-expanded', 'false');
+    n.setAttribute('aria-label', n.querySelector('h3').textContent + ': see its playbooks');
+    n.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') openWork(at()); });
+    n.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse') closeWork(); });
+    n.addEventListener('focus', function () { if (n.matches(':focus-visible')) openWork(at()); });
+    n.addEventListener('blur', closeWork);
+    n.addEventListener('click', function (e) { if (matchMedia('(hover: none)').matches) { e.stopPropagation(); if (openNode === n) closeWork(); else openWork(at()); } });
+  }
+  document.addEventListener('click', function () { if (matchMedia('(hover: none)').matches) closeWork(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeWork(); });
+  var rz; addEventListener('resize', function () { clearTimeout(rz); rz = setTimeout(function () { if (chart.classList.contains('alive')) drawLoops(); }, 150); });
+
+  // --- starting and coming back
+  function reset() {
+    stop();
+    if (tl) tl.kill();
+    dead(); seen = 0; shownLo = 0; shownHi = 0; st.lo = 0; st.hi = 0; MAX = 1; phaseName = '';
+    root.classList.remove('has-results');
+    [$('trunk'), $('trunk2'), $('rail')].forEach(function (l) { l.classList.remove('lit'); });
+    cro.classList.remove('lit-p'); cro.querySelector('.who').textContent = ''; cro.querySelector('.blocks').textContent = '';
+    agentsEl.textContent = ''; nodes = [cro]; agents = []; drops = []; work = [];
+    $('story').classList.remove('done');
+    $('reply').textContent = ''; $('booked').hidden = true; $('claim').hidden = false; $('consent-row').hidden = false; $('email').value = ''; $('consent').checked = false;
+    if (window.BP) BP.reset();
+  }
+  function begin(key, business, website, goal) {
+    reset();
+    run = fresh(); run.key = key; run.business = business; run.goal = goal;
+    cur = currency(goal);
+    $('g-site').textContent = host(website); $('g-num').textContent = goal;
+    history.replaceState(null, '', '#run=' + key);
+    stage('build');
+    $('skip').style.visibility = 'hidden';
+    workLine('Reading ' + host(website) + '. This takes about two minutes.');
+    if (!reduce) {
+      gsap.set(cro, { autoAlpha: 0 });
+      gsap.set(['#trunk', '#trunk2'], { scaleY: 0 }); gsap.set('#rail', { scaleX: 0 });
+      gsap.set('#meter', { autoAlpha: 0 }); gsap.set('#finale, #closer', { autoAlpha: 0 });
+      gsap.set('#flood', { scaleY: 0, transformOrigin: '50% 100%' });
+      gsap.fromTo('#goal', { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.9, ease: 'expo.out' });
+    }
+    waiting();
+    var me = run;
+    run.clock = setInterval(function () { $('clock').textContent = Math.round((Date.now() - me.started) / 1000) + ' s'; }, 1000);
+  }
+
+  var s0 = $('site0'), g0 = $('goal0'), r0 = $('reply0'), go = $('go');
+  $('ask').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var h = host(s0.value), goal = g0.value.trim();
+    if (!/^[a-z0-9-]+(\.[a-z0-9-]+)*\.[a-z]{2,}$/i.test(h)) { r0.textContent = 'Type a website, like yourcompany.com.'; s0.focus(); return; }
+    if (!/\d/.test(goal)) { r0.textContent = 'Type a number and a date, like $2m by December.'; g0.focus(); return; }
+    r0.textContent = ''; go.disabled = true;
+    call({ action: 'start', website: h, target: goal, company: $('company').value }).then(function (d) {
+      if (!d.ok) { r0.textContent = d.message || 'That didn’t work. Try again.'; return; }
+      begin(d.key, d.business, h, goal);
+      poll();
+    }).catch(function () { r0.textContent = 'We couldn’t reach the team builder. Try again in a moment.'; }).then(function () { go.disabled = false; });
+  });
+
+  function again() { reset(); run = null; history.replaceState(null, '', location.pathname + location.search); if (window.gsap) gsap.set('#flood', { scaleY: 0 }); stage('start'); s0.focus(); }
+  card.addEventListener('mouseenter', function () { if (tl) tl.pause(); });
+  card.addEventListener('mouseleave', function () { if (tl) tl.play(); });
+  $('skip').addEventListener('click', finalState);
+  $('again').addEventListener('click', again);
+
+  // Claim: stored with consent, then the visitor books time with Lorcan.
+  $('claim').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var v = $('email').value.trim(), reply = $('reply');
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)) { reply.textContent = 'Type your work email.'; $('email').focus(); return; }
+    if (!$('consent').checked) { reply.textContent = 'Tick the box so we can keep your email and this plan.'; $('consent').focus(); return; }
+    reply.textContent = 'Saving…';
+    call({ action: 'claim', key: run.key, email: v, consent: true }).then(function (d) {
+      if (!d.ok) { reply.textContent = d.message || 'That didn’t work. Try again.'; return; }
+      reply.textContent = '';
+      $('claim').hidden = true; $('consent-row').hidden = true; $('booked').hidden = false;
+      if (BOOKING_URL) { $('book').href = BOOKING_URL; $('book').hidden = false; $('booked-t').textContent = 'Saved. Pick a time and Lorcan will walk you through your team. This page\u2019s address brings you back to your plan, so keep it.'; }
+      else { $('book').hidden = true; $('booked-t').textContent = 'Saved. Lorcan at Lua will be in touch to set a time.'; }
+    }).catch(function () { reply.textContent = 'We couldn’t save that. Try again in a moment.'; });
+  });
+
+  // A run in the address means someone is coming back to it: show it finished, or pick it up where it is.
+  var back = (location.hash.match(/^#run=([\w-]{8,80})$/) || [])[1];
+  if (back) {
+    call({ action: 'feed', key: back }).then(function (d) {
+      if (!d.ok) { history.replaceState(null, '', location.pathname); return; }
+      begin(back, d.business, d.website, d.goal);
+      if (d.plan) { take(d); finalState(); } else poll();
+    }).catch(function () {});
+  }
+})();
+</script>
+
+<script>
+// The blueprint under the form. Every name, count and line comes from the library's own files.
+(function () {
+  var B = {"seats":{"account-executive":{"n":"Account executive","l":"vp-sales","j":"Take every first meeting held to a signed deal handed to delivery, on evidence the buyer gave: a dated next step, a named buyer, the buyer's own numbers.","u":"Win rate on qualified deals","c":["meeting-prep","qualify","mutual-action-plan","close-plan"],"o":["stakeholder-map","business-case","deal-inspection","trial-and-pilot-conversion","handover-to-delivery"],"k":["Every price, discount and term","Every proposal, contract and order form sent"]},"cmo":{"n":"CMO","l":"cro","j":"Run marketing: split the marketing envelope across the product, performance, content and events seats weekly by the qualified pipeline each makes per unit of spend and per hour.","u":"Marketing-sourced qualified pipeline","c":["marketing-allocation-review"],"o":[],"k":["Any rise in total marketing spend","Hiring, retiring or pausing a marketing seat"]},"content-and-social":{"n":"Content and social","l":"cmo","j":"Answer the buyer's real questions with pieces and posts built from real customer work, published under a named person's approval.","u":"Qualified leads from content and posts","c":["content","peoples-posts"],"o":["brand-and-pr","search-and-ai-answers","nurture-to-threshold"],"k":["Every post, approved by the person it is for","Every published piece"]},"cro":{"n":"CRO","l":"none","j":"Own the revenue number: call the forecast each week, split the envelope across the leaders, and keep every seat inside its guardrails and stage.","u":"Won revenue against goal","c":["forecast-review","motion-mix-review","guardrail-review"],"o":[],"k":["Calling the number","Every price, package, discount band and term"]},"csm":{"n":"CSM","l":"vp-customer","j":"Get every new customer live on a dated plan, watch health weekly, and run a person-led save the moment risk shows.","u":"Customers live on time and above the health line","c":["customer-onboarding","usage-health","save-play"],"o":["qbr-prep","collections"],"k":["Every message to a paying customer","Calling an account saved or lost"]},"deal-desk":{"n":"Deal desk","l":"vp-sales","j":"Turn a buyer's yes into a signed contract on the business's terms: proposals, value-based prices inside the rules, discount approvals and contracts, every price and term set by a person.","u":"Days from verbal yes to signature","c":["proposal-and-deck","value-pricing","discount-approval","contract-and-terms"],"o":[],"k":["Every price, discount and term","Every proposal, contract and order form sent"]},"events-and-community":{"n":"Events and community","l":"cmo","j":"Put the team in the rooms where the ICP already gathers, run webinars worth attending, and follow up every conversation while it is warm.","u":"Qualified meetings from events, webinars and community","c":["events","webinars"],"o":["community"],"k":["Which events to attend and every booking or sponsorship","Each person's own time at an event"]},"inbound-rep":{"n":"Inbound rep","l":"vp-sales","j":"Answer every inbound lead and chat in minutes, qualify lightly, and book every good fit onto a seller's calendar.","u":"Good-fit inbound leads with a meeting booked","c":["inbound-speed"],"o":["website-chat","reply-to-meeting"],"k":["Any lead at or above the person-sends line","Any question about price, terms or security beyond the approved answers"]},"partner-manager":{"n":"Partner manager","l":"vp-customer","j":"Run partners who source and close paid revenue: tiers on evidence, registration without channel conflict, and fees paid on time on paid revenue only.","u":"Partner-sourced qualified pipeline","c":["partner-program"],"o":["warm-intros","referral-ask"],"k":["Every message to a partner","Partner tiers, fees and contracts"]},"performance-marketer":{"n":"Performance marketer","l":"cmo","j":"Turn marketing money and pages into qualified pipeline: small paid tests with caps and stop rules, segment and deal pages, and presence in search and AI answers.","u":"Qualified pipeline from paid and pages per unit of spend","c":["paid","landing-and-deal-pages"],"o":["search-and-ai-answers"],"k":["Every paid cap and any rise in spend","Restarting a test a stop rule paused"]},"product-marketer":{"n":"Product marketer","l":"cmo","j":"Own what the business says and can prove: positioning, the approved-claims catalogue, battlecards, launches and customer proof, so every writer in every seat is right.","u":"Win rate in deals against a named competitor","c":["positioning-and-messaging","approved-claims","competitive-intel"],"o":["product-launch","customer-marketing","analyst-relations"],"k":["The positioning and every messaging house","Every new or re-worded claim, and every regulated claim"]},"renewals-and-expansion":{"n":"Renewals and expansion","l":"vp-customer","j":"Decide every renewal long before its date on value delivered, find the next use case in healthy customers, and win back what was lost.","u":"Net revenue retention","c":["renewal","expansion"],"o":["referral-ask"],"k":["Every renewal price, uplift, discount and term","Every expansion quote"]},"researcher":{"n":"Researcher","l":"cro","j":"Give every seat dated, sourced findings on accounts, people and buying signals, so every touch carries a real reason.","u":"Findings used in a sent touch or deal note within 14 days","c":["account-research","signals"],"o":["lookalikes"],"k":["Marking a lookalike a good fit or not","Any finding about a person beyond their professional role"]},"revops":{"n":"RevOps","l":"cro","j":"Keep the record true, the funnel fresh and every lead routed in minutes, so every seat decides on facts.","u":"Records complete on owner, source, consent and evidence","c":["account-ledger","crm-hygiene","lead-routing","numbers-and-funnel"],"o":["territory-and-capacity","enablement-library","call-review-coaching"],"k":["Merging records, changing owners and moving stages","Closing a deal lost"]},"sdr":{"n":"SDR","l":"vp-sales","j":"Turn ICP accounts into qualified first meetings held, with a dated reason behind every touch.","u":"Qualified meetings held","c":["list-building","email-sequences","reply-to-meeting"],"o":["account-based-outbound","linkedin-touches","call-blocks","warm-intros","gifts-and-direct-mail","partner-program","win-back"],"k":["Every call and every LinkedIn send from a person's own account","Every message to a named enterprise contact or a deal at or above the person-sends line"]},"solutions-engineer":{"n":"Solutions engineer","l":"vp-sales","j":"Prove the product fits the buyer's problem: demos, proof sprints and trials with entry and exit criteria, security and procurement answers, and pitches in the buyer's own numbers.","u":"Technical win rate: deals that pass their proof or security review","c":["demo-and-proof","procurement-and-security"],"o":["tailored-pitch"],"k":["Every demo and call","Every security answer not in the approved library"]},"strategist":{"n":"Strategist","l":"cro","j":"Onboard the business and re-test the plan each quarter: who to sell to, how each segment sells, and what to price, from won and lost evidence.","u":"Win rate in the segments the plan backs","c":["quarterly-gtm-review","icp-design"],"o":["pricing-and-packaging","market-comparables"],"k":["Every ICP, segment and positioning change","Every price, package and price test"]},"vp-customer":{"n":"VP Customer","l":"cro","j":"Run revenue after the sale: split the customer envelope across the CSM, renewals and partner seats weekly so at-risk revenue is covered first and net retention grows.","u":"Net revenue retention","c":["customer-leadership-review"],"o":[],"k":["Hiring, retiring or pausing a customer seat","Any seat's share outside an approved range"]},"vp-sales":{"n":"VP Sales","l":"cro","j":"Run new business: split the sales envelope across the SDR, inbound and deal-desk seats weekly so qualified pipeline covers the gap and every deal's stage stays honest.","u":"Qualified pipeline created a month against coverage","c":["sales-leadership-review"],"o":["call-review-coaching"],"k":["Hiring, retiring or pausing a sales seat","Any seat's share outside an approved range"]}},"plays":{"account-based-outbound":{"n":"Account-based outbound","s":"sdr","h":"sequence","j":"Plan and run the approach to one named account across email, LinkedIn, phone, intros and mail, to several people, around one point of view.","u":"Named accounts with a first meeting","k":["Any named contact at an account at or above the person-sends line","The account owner agrees the account and its point of view before it is enrolled"],"m":["account-based-outbound"]},"account-ledger":{"n":"Account ledger","s":"revops","h":"review-cadence","j":"Check every changed account, person and deal for an owner, a source, a consent basis and the evidence for its stage, and put each gap in front of the person who can fill it.","u":"Records complete on owner, source, consent and evidence","k":["Changing a record's owner","Moving a deal's stage"],"m":["revenue-cadence"]},"account-research":{"n":"Account research","s":"researcher","h":"watch","j":"One research pass per account: the value we could create, its top 3 outcomes, one sourced buyer and up to 3 people, each fact dated and sourced.","u":"Researched accounts reaching a first meeting","k":["The account plan for any account at or above the person-sends line","Any inferred outcome a writer wants to use as a claim"],"m":["account-based-outbound","high-velocity-outbound"]},"analyst-relations":{"n":"Analyst relations","s":"product-marketer","h":"document-for-approval","j":"Where buyers in a segment consult analysts, brief the right analysts on a steady cadence and earn inclusion in the reports buyers read.","u":"Inclusions in target analyst reports","k":["Whether analysts matter for this business at all: the CRO decides","Every briefing, response and roadmap line"],"m":["demand-generation"]},"approved-claims":{"n":"Approved claims","s":"product-marketer","h":"review-cadence","j":"Keep the catalogue of every claim a writer may make, each with its source, its owner and an expiry date, so every draft in every engine says only what the business can prove.","u":"Drafts held for an unsourced claim a month","k":["Every new or re-worded claim","Every regulated claim, by the approver named in legal rules"],"m":["demand-generation"]},"brand-and-pr":{"n":"Brand and PR","s":"content-and-social","h":"document-for-approval","j":"Earn coverage in the outlets the ICP reads with real data and customer stories: every release and pitch is assembled for the one spokesperson approver and sent by a person.","u":"Earned mentions in target outlets a quarter","k":["Every pitch, statement and quote, by the one spokesperson approver","Every interview: a person speaks, the recipe only prepares"],"m":["demand-generation"]},"business-case":{"n":"Business case","s":"account-executive","h":"document-for-approval","j":"Show what the buyer gains, what it costs them and when it pays back, using the buyer's own numbers with the working shown.","u":"Proposals backed by a business case the buyer has checked","k":["Every number before the buyer sees it","The price inside the case, set by a person through value pricing"],"m":["deal-desk"]},"call-blocks":{"n":"Call blocks","s":"sdr","h":"sequence","j":"Build a ranked call list for a seller's block, a one-screen brief per call, and put the notes and next step into the deal afterwards.","u":"Meetings booked per call block","k":["Every call: a person dials and talks","Recording only where consent is given and legal rules allow"],"m":["account-based-outbound","high-velocity-outbound"]},"call-review-coaching":{"n":"Call review and coaching","s":"revops","h":"review-cadence","j":"Write private coaching notes for people who sell from consented call transcripts: one strength, one thing to change, tied to the stage the call was meant to move.","u":"Meeting-to-qualified conversion for coached sellers","k":["Coaching is delivered by a manager, never by the agent","Notes are never used for pay, ratings or discipline"],"m":["revenue-cadence"]},"close-plan":{"n":"Close plan","s":"account-executive","h":"document-for-approval","j":"Run the last 30 days to signature on every commit deal: the remaining steps, the risks and a dated action for each owner.","u":"Commit deals signed by their close date","k":["Every message on a deal at or above the person-sends line","Any concession, price change or term change inside the horizon"],"m":["deal-desk"]},"collections":{"n":"Collections","s":"csm","h":"sequence","j":"Put one polite, reviewed reminder in front of a person when an invoice goes overdue, find out what is blocking payment, and hand to a named person before the relationship is at risk.","u":"Receivables more than 30 days overdue","k":["Every reminder: messages to paying customers are a person's","Invoices in dispute, accounts in a renewal or support escalation, and agreed payment plans go to their owner, not a reminder"],"m":[]},"community":{"n":"Community","s":"events-and-community","h":"list-play","j":"Run a community the ICP would join for its own sake, and measure it on qualified members who are active, never on headcount.","u":"Qualified members active a month","k":["The programme and every host","Moderation decisions about a member"],"m":["events-and-community"]},"competitive-intel":{"n":"Competitive intel","s":"product-marketer","h":"watch","j":"Watch the competitors met most in deals for dated, sourced changes and write each as a finding the battlecards and the sellers in those deals draw on.","u":"Win rate in deals against a named competitor","k":["Any finding used in a comparison sent to a buyer or published","Any statement about a competitor's price"],"m":["demand-generation"]},"content":{"n":"Content from real work","s":"content-and-social","h":"document-for-approval","j":"Turn real customer work and wins into pieces that answer the questions buyers ask, and judge every piece on the qualified leads it brings.","u":"Qualified leads from content a month","k":["Every piece before it is published","Any customer named or quoted, only with permission on record"],"m":["demand-generation"]},"contract-and-terms":{"n":"Contract and terms","s":"deal-desk","h":"document-for-approval","j":"Draft the contract from the business's templates and the agreed deal, and mark every change the buyer asks for so a person decides each one.","u":"Median days from contract sent to signature","k":["Every term, and every change to the standard paper: always a person's","Sending the contract and any redline to the buyer"],"m":["deal-desk"]},"crm-hygiene":{"n":"CRM hygiene","s":"revops","h":"review-cadence","j":"Find duplicates, missing owners, stale stages and missing next steps, and put each fix in front of the person who owns it.","u":"Open deals with a dated next step","k":["Merging duplicates","Closing a stale deal as lost"],"m":["revenue-cadence"]},"customer-leadership-review":{"n":"Customer leadership review","s":"vp-customer","h":"review-cadence","j":"Each week, split the VP Customer envelope (people hours and sends a day) across the CSM, renewals and partner seats by the revenue each keeps or adds per hour, putting at-risk renewals first, inside the CRO's allocation and with a floor under every live seat.","u":"Net revenue retained and added per people hour","k":["Any seat's share outside the range a person approved","Hiring, retiring or pausing a seat"],"m":["expansion-and-renewal","trial-and-pilot-conversion","win-back-and-reactivation","partners-and-referrals"]},"customer-marketing":{"n":"Customer marketing","s":"product-marketer","h":"list-play","j":"Turn happy customers into case studies, references, reviews and logos, each with written permission and an expiry, so every writer has proof to use.","u":"Permissioned proof assets added a quarter","k":["Every ask: it is a message to a paying customer, so a person sends it","The account owner clears each ask first"],"m":["demand-generation"]},"customer-onboarding":{"n":"Customer onboarding","s":"csm","h":"sequence","j":"Take every new customer from signed contract to live on a fixed, dated plan, with the outcome they bought written down on day one.","u":"Customers live on time","k":["Every message to the customer: they are paying, so a person sends it (the send door enforces this)","The kickoff call and the go-live date are the onboarding owner's"],"m":["expansion-and-renewal","trial-and-pilot-conversion"]},"deal-inspection":{"n":"Deal inspection","s":"account-executive","h":"review-cadence","j":"Inspect every open deal's evidence each week so the forecast is called on what buyers have done, not on what sellers feel.","u":"Forecast accuracy: commit called versus won at quarter end","k":["The forecast call itself: the CRO and VP Sales call commit, the recipe only shows the evidence","Any change to a deal's stage or forecast category"],"m":["deal-desk"]},"demo-and-proof":{"n":"Demo and proof","s":"solutions-engineer","h":"document-for-approval","j":"Turn every demo or proof request into a written proof plan with entry and exit criteria, an end date and owners on both sides, so proof ends in a decision rather than drift.","u":"Proofs passed to proposal","k":["Every demo is given by a person","Any proof plan, trial extension or free work"],"m":["account-based-outbound","inbound-response"]},"discount-approval":{"n":"Discount approval","s":"deal-desk","h":"document-for-approval","j":"Route each discount request to the approver the pricing rules name, with the deal's evidence and what the business gets in return.","u":"Average discount on won deals","k":["Every discount decision, by the approver the pricing rules name","Any discount outside the bands goes to the top of the approval chain and is never auto-routed lower"],"m":["deal-desk"]},"email-sequences":{"n":"Email sequences","s":"sdr","h":"sequence","j":"Run short, relevant email sequences to listed contacts behind the send door, stopping the moment anyone replies, opts out or bounces.","u":"Positive replies per 100 contacts","k":["Any named contact at an account at or above the person-sends line","Any contact at an open deal or a customer"],"m":["high-velocity-outbound"]},"enablement-library":{"n":"Enablement library","s":"revops","h":"document-for-approval","j":"Keep playbooks, objection handling and talk tracks for the people who sell, built from won deals and approved claims, retired when they stop working.","u":"Win rate on deals where the playbook was used","k":["A person approves every page before sellers see it","Any claim not already in approved claims goes to its approver first"],"m":["revenue-cadence"]},"events":{"n":"Events","s":"events-and-community","h":"spend-play","j":"Pick the events where the ICP actually is and spend on them inside the events envelope, with a cap per event, a daily pace and a stop on cost per meeting held.","u":"Meetings held from events","k":["Every event picked and its spend","Every person's time booked, confirmed by that person"],"m":["events-and-community"]},"expansion":{"n":"Expansion","s":"renewals-and-expansion","h":"sequence","j":"Find the next use case in healthy customers from their own usage and goals, and price only the new scope.","u":"Expansion revenue a quarter","k":["Every message to the customer: a person sends it (the send door enforces this)","The account owner removes any account below the health floor, with an open save plan, or renewing inside sixty days before sending"],"m":["expansion-and-renewal"]},"forecast-review":{"n":"Forecast review","s":"cro","h":"review-cadence","j":"Run the weekly forecast call: won, commit, best case and gap, every deal in commit inspected against stage evidence before it counts.","u":"Forecast accuracy at quarter close (commit vs won)","k":["The CRO calls the number; the agent never commits a deal on its own","Moving any deal at or above the person-sends line into or out of commit"],"m":["revenue-cadence"]},"gifts-and-direct-mail":{"n":"Gifts and direct mail","s":"sdr","h":"spend-play","j":"Send a relevant gift or piece of mail within approved spend, each one aimed at a specific next step, never as a stand-alone gesture.","u":"Gifts that lead to a meeting","k":["Every gift is approved by the account owner","Public-sector, regulated or gift-restricted recipients"],"m":["account-based-outbound"]},"guardrail-review":{"n":"Guardrail review","s":"cro","h":"review-cadence","j":"Each week, review hard stops, freezes and autonomy levels across every live recipe; tighten limits fast and widen autonomy slowly.","u":"Recipes running inside every hard stop","k":["A person approves every autonomy promotion","Unfreezing a recipe after a hard stop"],"m":["revenue-cadence"]},"handover-to-delivery":{"n":"Handover to delivery","s":"account-executive","h":"document-for-approval","j":"Hand every signed deal to the delivery team within days, with everything that was promised, to whom, and what the buyer will judge success by.","u":"Signed deals handed over within five working days","k":["Every message to the new customer: customers are a person's","Any promise outside the signed contract: the seller and delivery lead decide it together"],"m":["deal-desk"]},"icp-design":{"n":"ICP design and test","s":"strategist","h":"review-cadence","j":"Write candidate ICPs as testable hypotheses for a person to approve, and each month call promote, extend or drop on every test that has run its full 30 days on its fixed list.","u":"Meetings held per 100 accounts worked, per ICP","k":["A person approves every hypothesis before it is tested","Promoting or dropping an ICP"],"m":["revenue-cadence"]},"inbound-speed":{"n":"Inbound speed","s":"inbound-rep","h":"event-response","j":"Score, route and answer every inbound lead in minutes: an approved reply drafted within 5 minutes and a meeting offered to every good fit.","u":"Inbound leads to meeting booked","k":["Any named contact at an account at or above the person-sends line","Any inbound from an existing customer or open deal"],"m":["inbound-response"]},"landing-and-deal-pages":{"n":"Landing and deal pages","s":"performance-marketer","h":"document-for-approval","j":"Build a page per segment from its proof and approved claims, published only after the CMO approves the exact version, and judge each on visit-to-meeting rate.","u":"Page visit to meeting rate","k":["Every page before it is published, on its exact version","Any price or term on a page"],"m":["demand-generation"]},"lead-routing":{"n":"Lead routing","s":"revops","h":"event-response","j":"Route every inbound lead to the right owner within minutes, with a named fallback when the owner does not act and a reason for every route on the record.","u":"Median minutes from lead to owner action","k":["Replies from paying customers go to their account owner, never round-robin","Changing the routing rules or the fallback"],"m":["revenue-cadence"]},"linkedin-touches":{"n":"LinkedIn touches","s":"sdr","h":"sequence","j":"Draft connection notes, messages and comments for a person to send from their own account, each tied to something the buyer said or did.","u":"LinkedIn conversations started a week","k":["Every send: a person sends from their own account; the recipe never logs in","Every comment on a public post"],"m":["account-based-outbound","high-velocity-outbound"]},"list-building":{"n":"List building","s":"sdr","h":"watch","j":"Build target lists from the ICP and segment rules, each account carrying the reason it is on the list and the trigger that makes now the time.","u":"Listed accounts that reply or book","k":["Any change to the ICP or a disqualifier","Any named account list for the high-touch segment"],"m":["account-based-outbound","high-velocity-outbound"]},"lookalikes":{"n":"Lookalikes","s":"researcher","h":"watch","j":"Find accounts that look like the best customers, with the reasons, for the account owner to mark good fit or not.","u":"Lookalikes marked good fit by owners a month","k":["Every lookalike: the account owner marks it before any outreach","Changes to the seed or the ICP"],"m":["demand-generation"]},"market-comparables":{"n":"Market comparables","s":"strategist","h":"review-cadence","j":"Study comparable companies' growth plays from public sources and turn the best into small tests the business could run.","u":"Comparable plays tested a quarter","k":["A person approves every test","Nothing learned from a comparable is presented to buyers as a claim"],"m":["revenue-cadence"]},"marketing-allocation-review":{"n":"Marketing allocation review","s":"cmo","h":"review-cadence","j":"Each week, split the CMO envelope (money, people hours and sends a day) across the product, performance, content and events seats by the qualified pipeline each makes per unit of spend and per hour, inside the CRO's allocation and with a floor under every live seat.","u":"Marketing-sourced qualified pipeline per unit of spend and per hour","k":["Any rise in total marketing spend","Any seat's share outside the range a person approved"],"m":["demand-generation","events-and-community"]},"meeting-prep":{"n":"Meeting prep","s":"account-executive","h":"document-for-approval","j":"A one-page brief for the meeting owner as soon as a first meeting is booked: who is coming, what changed, what to ask and the next step to ask for.","u":"First meetings that reach qualified","k":["The brief is internal: the meeting owner reads and approves it, nothing reaches the buyer","Any next step involving price or terms"],"m":["account-based-outbound","high-velocity-outbound","inbound-response"]},"motion-mix-review":{"n":"Motion mix review","s":"cro","h":"review-cadence","j":"Each month, split people hours and agent capacity across motions by the contractable money each returns per hour, keeping a minimum floor under every live motion.","u":"Pipeline created per people hour","k":["A person approves every change to the split","Starting or stopping a motion"],"m":["revenue-cadence"]},"mutual-action-plan":{"n":"Mutual action plan","s":"account-executive","h":"document-for-approval","j":"Agree a shared, dated plan to signature with the buyer, worked back from the date the buyer needs to be live.","u":"Qualified deals with a buyer-agreed dated plan","k":["Every plan sent on a deal at or above the person-sends line","Any date the seller commits the business to (delivery, go-live support)"],"m":["deal-desk"]},"numbers-and-funnel":{"n":"Numbers and funnel","s":"revops","h":"review-cadence","j":"Keep one funnel table, every stage counted fresh each day from the record, with conversion and time in stage by segment and motion.","u":"Funnel stages refreshed on time","k":["Changing a stage definition is a person's","Numbers shown to investors or the board are checked by a person"],"m":["revenue-cadence"]},"nurture-to-threshold":{"n":"Nurture to threshold","s":"content-and-social","h":"sequence","j":"Keep fitting people below the buying line warm with useful, infrequent touches, and hand them to a seller the moment they engage.","u":"Nurtured people handed to a seller","k":["Anyone at a current customer goes to the account owner, not into nurture; becoming a customer ends the sequence","Any contact at an account at or above the person-sends line: a person sends (the send door enforces this)"],"m":["win-back-and-reactivation"]},"paid":{"n":"Paid tests","s":"performance-marketer","h":"spend-play","j":"Run small paid tests with a spend cap, a stop rule and pacing, joined to the CRM so each is judged on qualified pipeline, not clicks.","u":"Cost per qualified opportunity from paid","k":["Every test, its ads and its cap before launch","Any rise in a cap or a pace"],"m":["demand-generation"]},"partner-program":{"n":"Partner program","s":"partner-manager","h":"review-cadence","j":"Run partner tiers on evidence, rule on deal registrations without channel conflict, and propose referral fees on time and only on paid revenue.","u":"Partner-sourced revenue a quarter","k":["A proposal changes nothing until a person approves it: tier changes, registration rulings and channel conflicts are the partner manager's","Every message to a partner, including the enablement pack and the written ruling, is sent by a person under a signed agreement"],"m":["partners-and-referrals"]},"peoples-posts":{"n":"People's posts","s":"content-and-social","h":"document-for-approval","j":"Draft posts for named people in their own voice from what they really did that week, published only after that person approves each one.","u":"Conversations with ICP accounts from posts a month","k":["Every post, by the named person it is for, acting as the spokesperson for their own post; no one approves on their behalf","Any customer named, only with permission on record"],"m":["demand-generation"]},"positioning-and-messaging":{"n":"Positioning and messaging","s":"product-marketer","h":"review-cadence","j":"Set the positioning from why real customers bought and why others did not, build a messaging house per persona, and test it in market before every writer uses it.","u":"Positive-reply rate on the winning message","k":["The positioning and every messaging house before any writer uses them","Calling a test winner: a person confirms the sample and the result"],"m":["demand-generation"]},"pricing-and-packaging":{"n":"Pricing and packaging","s":"strategist","h":"document-for-approval","j":"Propose value-based packages and price tests from what customers use and pay for; people approve every price before any buyer sees it.","u":"Average contract value on won deals","k":["Every price, package, discount band and term is a person's; the document never fills one","Each test's price move, audience, stop rule and judging date are set by the pricing approver, one test live at a time"],"m":["revenue-cadence"]},"procurement-and-security":{"n":"Procurement and security","s":"solutions-engineer","h":"document-for-approval","j":"Clear security questionnaires, vendor forms and procurement steps early and fast, from approved answers, with every new answer checked by its owner.","u":"Median days from legal engaged to procurement cleared","k":["Every new or changed security answer: the security owner writes it, and legal approves the set before the owner returns it","Bank, tax, insurance and signatory details on vendor forms, entered by finance"],"m":["deal-desk"]},"product-launch":{"n":"Product launch","s":"product-marketer","h":"document-for-approval","j":"Tier every launch by what is at stake, write the plan that tier earns with seller enablement dated before day zero, and judge it on the qualified pipeline it makes.","u":"Launch-sourced qualified pipeline","k":["The tier, the plan and every launch claim","The launch page before it is published"],"m":["demand-generation"]},"proposal-and-deck":{"n":"Proposal and deck","s":"deal-desk","h":"document-for-approval","j":"Build the proposal from the account's own facts, the business case, the agreed plan and the person-set price, in the business's own style, and share it by link once the owner approves.","u":"Proposals sent that reach legal engaged","k":["Every proposal before it is sent","The price and terms block: copied from what a person set, never written by the recipe"],"m":["deal-desk"]},"qbr-prep":{"n":"QBR prep","s":"csm","h":"document-for-approval","j":"Prepare each business review around the customer's own goals and numbers, so the meeting decides next quarter's plan rather than reciting features.","u":"Reviews held with an agreed next-quarter plan","k":["The deck is approved at its exact hash before it leaves; the person presenting edits and owns it","Every message to the customer, including the invitation and the written plan afterwards, is sent by a person (the send door enforces this)"],"m":["expansion-and-renewal"]},"qualify":{"n":"Qualify","s":"account-executive","h":"review-cadence","j":"Qualify every deal after the first meeting on evidence the buyer gave, not on the seller's hope, and flag any deal that has gone 14 days without a dated next step.","u":"Share of open deals qualified on evidence with a dated next step","k":["Moving a deal into or out of qualified, or disqualifying it","Any deal at or above the person-sends line"],"m":["deal-desk"]},"quarterly-gtm-review":{"n":"Quarterly go-to-market review","s":"strategist","h":"review-cadence","j":"Each quarter, re-test the ICP, the segments and how each one sells against the deals actually won and lost, and propose what to keep, change or drop.","u":"Win rate on ICP-fit qualified deals","k":["People approve every ICP, segment or sales-model change","Dropping a segment that holds paying customers"],"m":["revenue-cadence"]},"referral-ask":{"n":"Referral ask","s":"renewals-and-expansion","h":"list-play","j":"Ask happy customers for a specific introduction at a moment of proven value, and make the introduction easy to give.","u":"Referred meetings a quarter","k":["Every ask goes to a paying customer, so a person sends it (the send door enforces this)","The account owner removes any customer with an open issue, a save plan or low health before sending"],"m":["partners-and-referrals"]},"renewal":{"n":"Renewal","s":"renewals-and-expansion","h":"document-for-approval","j":"Work every renewal from 90 days out on the value delivered, so the renewal is decided long before the date and never as a surprise.","u":"Gross revenue retained","k":["The renewal owner approves the exact value summary, then sends it: every message to the customer is sent by a person (the send door enforces this)","The value summary carries no price; renewal price, uplift, discount, term length and any multi-year offer are the renewal owner's, approved under pricing_rules"],"m":["expansion-and-renewal"]},"reply-to-meeting":{"n":"Reply to meeting","s":"sdr","h":"event-response","j":"Answer positive replies the same day with specific times, confirm and remind, and rebook every no-show.","u":"Positive replies to meetings held","k":["Any named contact at an account at or above the person-sends line","Any reply that asks about price or terms"],"m":["account-based-outbound","high-velocity-outbound","inbound-response"]},"sales-leadership-review":{"n":"Sales leadership review","s":"vp-sales","h":"review-cadence","j":"Each week, split the VP Sales envelope (people hours and sends a day) across the SDR, inbound and deal-desk seats by the qualified pipeline each makes per hour, inside the CRO's allocation and with a floor under every live seat.","u":"Qualified pipeline created per people hour","k":["Any seat's share outside the range a person approved","Hiring, retiring or pausing a seat"],"m":["account-based-outbound","high-velocity-outbound","inbound-response","deal-desk"]},"save-play":{"n":"Save play","s":"csm","h":"document-for-approval","j":"Run a person-led save plan for every at-risk customer: find the real cause, agree a recovery plan with the customer, and track it to healthy or to a clean decision.","u":"At-risk revenue saved","k":["The VP Customer approves the exact save plan before anyone sees it","The account owner delivers it: every message to the customer is sent by a person (the send door enforces this)"],"m":["expansion-and-renewal"]},"search-and-ai-answers":{"n":"Search and AI answers","s":"performance-marketer","h":"watch","j":"Track the buying questions buyers ask in search results and AI answers, and write dated findings on who is cited and whether what is said about the business is accurate.","u":"Qualified leads from search and AI answers a month","k":["Any page or correction made from a finding, approved before publishing in landing-and-deal-pages or content","Any comparison naming a competitor"],"m":["demand-generation"]},"signals":{"n":"Buying signals","s":"researcher","h":"watch","j":"Keep dated, sourced buying signals on every priority account so sellers act on a reason, not a calendar.","u":"Meetings from signal-led outreach","k":["Nothing about a named individual's private life is ever recorded","Acting on a signal at a paying customer is the account owner's"],"m":["revenue-cadence"]},"stakeholder-map":{"n":"Stakeholder map","s":"account-executive","h":"document-for-approval","j":"Map the buying group on each qualified deal: champion, economic buyer, signer, influencers and blockers, and the gaps still to close.","u":"Qualified deals multi-threaded with an engaged economic buyer","k":["Any first approach to a newly found contact inside an open deal","Calling a champion tested or a person a blocker: the owner confirms"],"m":["deal-desk"]},"tailored-pitch":{"n":"Tailored pitch","s":"solutions-engineer","h":"document-for-approval","j":"Build a pitch for one account or one segment in its own numbers and words, rendered from the engine's outcomes, never a generic deck.","u":"Pitches that win the next meeting","k":["Every pitch is approved and presented by the deal owner","Any price, discount or term"],"m":["account-based-outbound","high-velocity-outbound"]},"territory-and-capacity":{"n":"Territory and capacity","s":"revops","h":"review-cadence","j":"Size seller capacity from real people hours and split accounts into territories each person can actually work.","u":"Priority accounts touched per quarter","k":["Every territory change and account move","Hiring and anything that changes pay or quota"],"m":["revenue-cadence"]},"trial-and-pilot-conversion":{"n":"Trial and pilot conversion","s":"account-executive","h":"sequence","j":"Convert trials, pilots and free periods to paid before they end, by agreeing success criteria at the start and proving them before the end date.","u":"Trials and pilots converted to paid","k":["Any pilot or paid trial: the customer is already paying, so a person sends every message (the send door enforces this)","Any trial at or above the person-sends line"],"m":["trial-and-pilot-conversion"]},"usage-health":{"n":"Usage health","s":"csm","h":"review-cadence","j":"Score every customer weekly from real usage and billing signals, and flag risk and expansion early enough to act.","u":"Risk flagged 90+ days before renewal","k":["The score never messages a customer; this review writes nothing external","The account owner decides what each flag means and whether to open a save plan or an expansion conversation"],"m":["expansion-and-renewal"]},"value-pricing":{"n":"Value pricing","s":"deal-desk","h":"document-for-approval","j":"Prepare a price recommendation as a share of the buyer's quantified value, inside the pricing rules, for a person to set.","u":"Average selling price against list on won deals","k":["Every price: a named person sets it; the recipe never writes a price to a buyer","Any price below list routes to discount approval"],"m":["deal-desk"]},"warm-intros":{"n":"Warm intros","s":"sdr","h":"sequence","j":"Map paths from customers, investors, partners and staff to target buyers, draft a forwardable intro note, and thank the introducer whatever happens.","u":"Intro meetings held","k":["Every ask and every thank-you: sent by the person who holds the relationship","Any introducer who is a paying customer"],"m":["account-based-outbound"]},"webinars":{"n":"Webinars and workshops","s":"events-and-community","h":"sequence","j":"Invite the ICP to webinars and workshops that teach one buying question, with one invitation and at most one reminder, and hand every hand-raiser to the account owner.","u":"Qualified opportunities from webinars","k":["Topic, speakers and registration page, approved before any invitation","Any customer speaker, with their permission"],"m":["events-and-community"]},"website-chat":{"n":"Website chat","s":"inbound-rep","h":"event-response","j":"Answer website visitors from approved claims only, qualify lightly, and book good fits straight onto a seller's calendar.","u":"Chats to meeting booked","k":["Any question about price, terms, security or a contract","Any existing customer"],"m":["inbound-response"]},"win-back":{"n":"Win-back","s":"sdr","h":"sequence","j":"Revive lost and dormant deals worth another try, leading with a dated reason that something has changed.","u":"Revived deals a month","k":["Any lost deal at or above the person-sends line","Any account that has since become a customer"],"m":["win-back-and-reactivation"]}},"motions":[{"id":"high-velocity-outbound","n":"High-velocity outbound","w":"vp-sales","f":"High-velocity segments below the person-sends line, with short cycles and a clear persona, where volume with relevance wins.","u":"First meetings held a month","k":["New sequence copy before its first send","Every LinkedIn send and every call"],"c":["list-building","account-research","email-sequences","linkedin-touches","call-blocks","reply-to-meeting","meeting-prep","qualify"],"h":[3,8]},{"id":"account-based-outbound","n":"Account-based outbound","w":"vp-sales","f":"Named high-touch accounts above the person-sends line, where a few deals make the year and a buying group of several people decides.","u":"Named accounts with a qualified opportunity","k":["Which accounts are named","Every account plan"],"c":["list-building","account-research","account-based-outbound","warm-intros","linkedin-touches","call-blocks","gifts-and-direct-mail","reply-to-meeting","meeting-prep","tailored-pitch","qualify","demo-and-proof"],"h":[4,10]},{"id":"inbound-response","n":"Inbound response","w":"vp-sales","f":"Every inbound lead, form, demo request and chat, in any segment.","u":"Inbound leads to meeting held","k":["Every named enterprise contact and anything at or above the person-sends line","Inbound from existing customers or open deals"],"c":["inbound-speed","website-chat","reply-to-meeting","meeting-prep","qualify","demo-and-proof"],"h":[2,6]},{"id":"demand-generation","n":"Demand generation","w":"cmo","f":"Businesses that need more qualified pipeline than outbound alone makes, with an ICP, personas and approved claims on record.","u":"Marketing-sourced qualified pipeline","k":["The positioning, every messaging house and every new claim","Everything published: pages, articles, posts, press statements, analyst briefings"],"c":["positioning-and-messaging","approved-claims","competitive-intel","customer-marketing","lookalikes","content","search-and-ai-answers","peoples-posts","landing-and-deal-pages","paid","product-launch","brand-and-pr","analyst-relations"],"h":[4,12]},{"id":"events-and-community","n":"Events and community","w":"cmo","f":"Segments where buyers meet in person or learn from peers: conferences, workshops, practitioner communities.","u":"Meetings held from events, webinars and community","k":["Which events to attend and their spend","Each person's own time, confirmed by that person"],"c":["events","webinars","community"],"h":[6,16]},{"id":"deal-desk","n":"Deal desk","w":"vp-sales","f":"Every new-business deal from the first meeting held to signature and handover; high-touch runs every component, high-velocity runs qualify, mutual action plan (as a short next-steps note), value pricing from list, proposal, discount approval, contract and close plan.","u":"Won value from deals whose first meeting was held","k":["Every price, discount and term","Stage moves and the forecast call"],"c":["qualify","stakeholder-map","mutual-action-plan","business-case","value-pricing","proposal-and-deck","discount-approval","procurement-and-security","contract-and-terms","close-plan","deal-inspection","handover-to-delivery"],"h":[4,15]},{"id":"trial-and-pilot-conversion","n":"Trial and pilot conversion","w":"vp-customer","f":"Prospects on a free trial, a free period or a paid pilot, from the day it starts to signed and live.","u":"Trials and pilots converted to paid","k":["Every message to a paid pilot, which is a paying customer","Every trial at or above the person-sends line"],"c":["trial-and-pilot-conversion","customer-onboarding"],"h":[2,8]},{"id":"expansion-and-renewal","n":"Expansion and renewal","w":"vp-customer","f":"Paying customers from signature through each renewal, where retention and growth of the base carry net revenue retention.","u":"Net revenue retention","k":["Every message to a paying customer","Every renewal price, uplift, discount, credit and term"],"c":["customer-onboarding","usage-health","qbr-prep","save-play","renewal","expansion"],"h":[6,20]},{"id":"partners-and-referrals","n":"Partners and referrals","w":"vp-customer","f":"Happy customers and signed partners who can bring warm introductions, peer proof and co-sold deals.","u":"Referred and partner-sourced revenue a quarter","k":["Every ask to a paying customer and every message to a partner","Customer written permission for any reference, review, quote, logo or number"],"c":["referral-ask","customer-marketing","partner-program"],"h":[2,8]},{"id":"win-back-and-reactivation","n":"Win-back and reactivation","w":"vp-customer","f":"Lost deals, dormant opportunities and fitting people below the buying line, worked until a dated change or need makes them worth a seller's time.","u":"Revived and handed-off opportunities a month","k":["Any lost deal or contact at or above the person-sends line","Anyone now at a customer, who goes to the account owner"],"c":["win-back","nurture-to-threshold"],"h":[1,4]},{"id":"revenue-cadence","n":"Revenue cadence","w":"cro","f":"Every business the CRO runs: the weekly, monthly and quarterly operating rhythm that keeps the record true, the forecast honest and people hours on the motions that return the most contractable money.","u":"Won revenue against goal, with forecast accuracy at quarter close","k":["Calling the number each week","Every price, package, discount band and term"],"c":["account-ledger","lead-routing","signals","numbers-and-funnel","crm-hygiene","forecast-review","guardrail-review","call-review-coaching","motion-mix-review","icp-design","quarterly-gtm-review","territory-and-capacity","enablement-library","pricing-and-packaging","market-comparables"],"h":[3,8]}],"shapes":[{"id":"list-play","n":"Work a list","d":"Work a list once per period: each subject gets at most one message, after research, a draft and review."},{"id":"sequence","n":"Run a sequence","d":"A per-subject series of touches with waits between them, ending on the first stop."},{"id":"event-response","n":"Answer an event","d":"Respond to one event within a time limit: route it, then draft, book, brief or hand it to a person."},{"id":"document-for-approval","n":"Draft for approval","d":"Assemble one document from the record for a named person to approve; then deliver it as the person chose."},{"id":"review-cadence","n":"Review on a rhythm","d":"On a fixed rhythm, read the numbers and the record, and produce a call, a report, flags or proposals. Writes nothing external."},{"id":"watch","n":"Watch for change","d":"On a rhythm, check named sources for named subjects and write dated, sourced, fingerprinted findings. Contacts nobody."},{"id":"spend-play","n":"Spend from a budget","d":"Spend from an envelope on one kind of paid activity, with a cap per item, pacing and a stop rule."}]};
+  var root = document.documentElement, $ = function (id) { return document.getElementById(id); };
+  var bp = $('bp'), map = $('bp-map'), read = $('bp-read');
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var COLS = [['strategist'], ['researcher'], ['cmo', 'product-marketer', 'performance-marketer', 'content-and-social', 'events-and-community'],
+    ['vp-sales', 'sdr', 'inbound-rep', 'account-executive', 'solutions-engineer', 'deal-desk'],
+    ['vp-customer', 'csm', 'renewals-and-expansion', 'partner-manager'], ['revops']];
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  function ids(o) { return Object.keys(o); }
+  function pick(e, k, id) { e.dataset.k = k; e.dataset.id = id; return e; }
+
+  $('bp-count').textContent = ids(B.seats).length + ' roles \u00b7 ' + ids(B.plays).length + ' playbooks \u00b7 ' + B.motions.length + ' motions \u00b7 ' + B.shapes.length + ' ways of working';
+
+  B.motions.forEach(function (m) { var c = el('button', 'bp-chip', m.n); c.type = 'button'; $('bp-lens').appendChild(pick(c, 'motion', m.id)); });
+  B.shapes.forEach(function (m) { var c = el('button', 'bp-chip', m.n); c.type = 'button'; $('bp-kit').appendChild(pick(c, 'shape', m.id)); });
+  var fl = el('button', 'bp-chip floors', 'The floors'); fl.type = 'button'; $('bp-kit').appendChild(pick(fl, 'floors', 'floors'));
+
+  function dots(seat, cls) {
+    var w = el('div', 'bp-dots' + (cls ? ' ' + cls : ''));
+    ids(B.plays).forEach(function (id) {
+      if (B.plays[id].s !== seat) return;
+      var d = el('span', 'bp-d'); d.title = B.plays[id].n; d.appendChild(el('i')); w.appendChild(pick(d, 'play', id));
+    });
+    return w;
+  }
+  function node(id, cls) {
+    var n = el('button', 'bp-n' + (cls ? ' ' + cls : '')); n.type = 'button';
+    n.appendChild(el('i', 'bp-disc'));
+    if (cls === 'cro') { var r = el('i', 'pring'); n.appendChild(r); }
+    n.appendChild(el('span', '', B.seats[id].n));
+    return pick(n, 'seat', id);
+  }
+  var cro = el('div'); cro.style.cssText = 'display:flex;flex-direction:column;align-items:center;gap:2px';
+  cro.appendChild(node('cro', 'cro')); cro.appendChild(dots('cro', 'bp-lead-dots'));
+  $('bp-top').appendChild(cro);
+  COLS.forEach(function (col) {
+    var g = el('div', 'bp-group' + (col.length === 1 ? ' solo' : '')); g.style.flexGrow = Math.max(1, col.length - 1);
+    g.appendChild(node(col[0], 'lead'));
+    if (col.length === 1) {
+      var solo = el('div', 'bp-seats'); var s = el('div', 'bp-seat'); s.appendChild(el('div', 'bp-solo')); s.appendChild(dots(col[0])); solo.appendChild(s); g.appendChild(solo);
+    } else {
+      g.appendChild(dots(col[0], 'bp-lead-dots'));
+      var row = el('div', 'bp-seats');
+      col.slice(1).forEach(function (id) { var s = el('div', 'bp-seat'); s.appendChild(node(id)); s.appendChild(dots(id)); row.appendChild(s); });
+      g.appendChild(row);
+    }
+    $('bp-org').appendChild(g);
+  });
+
+  // each dot's place across the page sets its delay, so a change sweeps left to right
+  var allD = [].slice.call(bp.querySelectorAll('.bp-d')), allN = [].slice.call(bp.querySelectorAll('.bp-n')), allC = [].slice.call(bp.querySelectorAll('.bp-chip'));
+  var seatEl = {}, dotEl = {};
+  allN.forEach(function (n) { seatEl[n.dataset.id] = n; });
+  allD.forEach(function (d, i) { dotEl[d.dataset.id] = d; d.firstChild.style.setProperty('--w', '0ms'); d.dataset.i = i; });
+
+  // lines: drawn from where the nodes actually landed
+  var edges = [];
+  function path(a, b) { var m = Math.round((a.y + b.y) / 2); return 'M' + a.x + ' ' + a.y + 'V' + m + 'H' + b.x + 'V' + b.y; }
+  function draw() {
+    if (!map.offsetWidth || innerWidth <= 760) return;
+    var o = map.getBoundingClientRect();
+    function bot(e) { var r = e.getBoundingClientRect(); return { x: Math.round(r.left + r.width / 2 - o.left), y: Math.round(r.bottom - o.top) }; }
+    function top(e) { var r = e.getBoundingClientRect(); return { x: Math.round(r.left + r.width / 2 - o.left), y: Math.round(r.top - o.top) }; }
+    edges = [];
+    var from = bot($('bp-top').firstChild);
+    COLS.forEach(function (col) {
+      edges.push({ c: col[0], d: path(from, top(seatEl[col[0]])) });
+      if (col.length === 1) { var w = dotEl[ids(B.plays).filter(function (i) { return B.plays[i].s === col[0]; })[0]].parentNode; edges.push({ c: col[0], d: path(bot(seatEl[col[0]]), top(w)) }); }
+      col.slice(1).forEach(function (id) { edges.push({ c: id, d: path(bot(seatEl[col[0]].parentNode.querySelector('.bp-lead-dots')), top(seatEl[id])) }); });
+    });
+    $('bp-base').innerHTML = $('bp-on').innerHTML = '';
+    edges.forEach(function (e) {
+      var ns = 'http://www.w3.org/2000/svg', a = document.createElementNS(ns, 'path'), b = document.createElementNS(ns, 'path');
+      a.setAttribute('d', e.d); b.setAttribute('d', e.d); $('bp-base').appendChild(a); $('bp-on').appendChild(b); e.el = b;
+    });
+    paint();
+  }
+
+  function kept(list, cap) {
+    var w = el('div', 'keeps'); w.appendChild(el('span', 'cap', cap || 'A person keeps'));
+    var u = el('ul'); list.forEach(function (t) { u.appendChild(el('li', '', t)); }); w.appendChild(u); return w;
+  }
+  function col(cap, val, more) {
+    var w = el('div'); w.appendChild(el('span', 'cap', cap)); w.appendChild(el('p', 'val', val));
+    if (more) w.appendChild(el('p', 'names', more)); return w;
+  }
+  function lead(cap, name, what, more) {
+    var w = el('div'); w.appendChild(el('span', 'cap', cap)); w.appendChild(el('h3', '', name)); w.appendChild(el('p', '', what));
+    if (more) w.appendChild(el('p', 'names', more)); return w;
+  }
+  function names(l) { return l.map(function (i) { return B.plays[i].n; }).join(', '); }
+  function count(n, w) { return n + ' ' + w + (n === 1 ? '' : 's'); }
+  var lit = { s: {}, p: {} }, cur = null;
+
+  function paint() {
+    allD.forEach(function (d) { var v = lit.p[d.dataset.id]; d.classList.toggle('core', v === 'core'); d.classList.toggle('opt', v === 'opt'); d.classList.toggle('here', v === 'here'); if (v === 'here') d.classList.add('core'); });
+    allN.forEach(function (n) { n.classList.toggle('lit', !!lit.s[n.dataset.id]); });
+    edges.forEach(function (e) { e.el.classList.toggle('on', !!lit.s[e.c]); });
+    allC.forEach(function (c) { c.setAttribute('aria-pressed', cur && c.dataset.k === cur.k && c.dataset.id === cur.id ? 'true' : 'false'); });
+  }
+  function up(id) { while (id && id !== 'none' && B.seats[id]) { lit.s[id] = 1; id = B.seats[id].l; } }
+
+  function select(k, id) {
+    if (cur && cur.k === k && cur.id === id) return;
+    cur = { k: k, id: id }; lit = { s: {}, p: {} };
+    var parts = [];
+    if (k === 'motion') {
+      var m = B.motions.filter(function (x) { return x.id === id; })[0];
+      m.c.forEach(function (c) { lit.p[c] = 'core'; up(B.plays[c].s); }); up(m.w);
+      parts = [lead('A motion \u00b7 run by ' + B.seats[m.w].n, m.n, m.f),
+        col('Its number', m.u, count(m.c.length, 'playbook') + (m.h ? ' \u00b7 ' + m.h[0] + '\u2013' + m.h[1] + ' people hours a week' : '')), kept(m.k)];
+    } else if (k === 'seat') {
+      var s = B.seats[id];
+      s.c.forEach(function (c) { lit.p[c] = 'core'; }); s.o.forEach(function (c) { lit.p[c] = 'opt'; }); up(id);
+      parts = [lead(s.l === 'none' ? 'Runs the number' : 'A role \u00b7 reports to ' + B.seats[s.l].n, s.n, s.j),
+        col('Its number', s.u, 'Always on: ' + names(s.c) + (s.o.length ? '. Optional: ' + names(s.o) : '') + '.'), kept(s.k)];
+    } else if (k === 'play') {
+      var q = B.plays[id];
+      lit.p[id] = 'here'; up(q.s);
+      var shape = B.shapes.filter(function (x) { return x.id === q.h; })[0];
+      parts = [lead('A playbook \u00b7 ' + B.seats[q.s].n, q.n, q.j), col('Its number', q.u, shape.n + (q.m.length ? ' \u00b7 ' + count(q.m.length, 'motion') : '')), kept(q.k)];
+    } else if (k === 'shape') {
+      var h = B.shapes.filter(function (x) { return x.id === id; })[0], n = 0;
+      ids(B.plays).forEach(function (c) { if (B.plays[c].h === id) { lit.p[c] = 'core'; up(B.plays[c].s); n++; } });
+      parts = [lead('A way of working \u00b7 built once', h.n, h.d), col('Used by', count(n, 'playbook')), kept(['Checks the kill switch and pause before every step and after every wait'], 'Every run')];
+    } else {
+      ids(B.plays).forEach(function (c) { lit.p[c] = 'opt'; }); ids(B.seats).forEach(function (c) { lit.s[c] = 1; });
+      parts = [lead('Fixed in code \u00b7 on every playbook', 'The floors', 'Legal floors, consent, the send door, a kill switch, caps. No agent and no playbook can change them.'),
+        col('The CRO', 'May restrict anything. May raise only inside a range a person approved.'),
+        kept(['Who sends to customers and big deals', 'Prices and terms', 'Widening any range'])];
+    }
+    read.innerHTML = ''; parts.forEach(function (x) { read.appendChild(x); });
+    paint();
+  }
+
+  // Plays the motions in turn until someone reaches for it, then picks up again once they have left.
+  var timer = null, held = false, at = 0, inView = true, wait = null;
+  function sweeping(on) { allD.forEach(function (d) { d.firstChild.style.setProperty('--w', on ? (d.dataset.i * 7) + 'ms' : '0ms'); }); }
+  function tick() {
+    if (held || !inView || root.dataset.stage === 'build' || document.hidden || read.classList.contains('inline')) return;
+    at = (at + 1) % B.motions.length; sweeping(true); select('motion', B.motions[at].id);
+  }
+  function hold() { held = true; sweeping(false); clearTimeout(wait); }
+  function release(ms) { clearTimeout(wait); wait = setTimeout(function () { held = false; var i = cur && cur.k === 'motion' ? B.motions.map(function (m) { return m.id; }).indexOf(cur.id) : -1; if (i >= 0) at = i; }, ms); }
+  function fromEvent(e) { var t = e.target.closest && e.target.closest('[data-k]'); return t && bp.contains(t) ? t : null; }
+  bp.addEventListener('pointerover', function (e) { if (e.pointerType !== 'mouse') return; hold(); var t = fromEvent(e); if (t) select(t.dataset.k, t.dataset.id); });
+  bp.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse') release(4000); });
+  function phone() { return innerWidth <= 760; }
+  function place(t) {
+    read.classList.remove('inline');
+    if (!phone()) { map.after(read); return; }
+    var k = t && t.dataset.k;
+    if (k !== 'seat' && k !== 'play') { $('bp-lens').after(read); return; }
+    read.classList.add('inline');
+    var g = t.closest('.bp-group');
+    if (!g) $('bp-top').after(read);
+    else if (g.classList.contains('solo')) g.appendChild(read);
+    else if (t.closest('.bp-seat')) t.closest('.bp-seat').after(read);
+    else g.querySelector('.bp-lead-dots').after(read);
+  }
+  var wasPhone = phone();
+  addEventListener('resize', function () { if (phone() !== wasPhone) { wasPhone = phone(); place(null); } });
+  bp.addEventListener('click', function (e) { hold(); var t = fromEvent(e); if (t) { select(t.dataset.k, t.dataset.id); place(t); } release(12000); });
+  bp.addEventListener('focusin', function (e) { var t = fromEvent(e); if (t && t.matches(':focus-visible')) { hold(); select(t.dataset.k, t.dataset.id); } });
+  bp.addEventListener('focusout', function () { release(4000); });
+
+  // After a run: this visitor's engine stays lit, and hovering reads the rest of the library.
+  var mine = null, home = bp.parentNode, homeNext = bp.nextSibling, baseCount = $('bp-count').textContent;
+  function showMine() {
+    if (!mine) return;
+    cur = { k: 'engine', id: 'mine' }; lit = { s: {}, p: {} };
+    mine.plays.forEach(function (c) { if (B.plays[c]) lit.p[c] = 'core'; });
+    mine.seats.forEach(function (c) { lit.s[c] = 1; });
+    read.innerHTML = '';
+    read.appendChild(lead('Your engine', 'What this run chose, out of the whole library', 'Lit up: the roles and playbooks picked for your motions. Dimmed: the rest of what Lua has written. Hover anything to read it.'));
+    read.appendChild(col('Chosen', count(mine.plays.length, 'playbook') + ' \u00b7 ' + count(mine.seats.length, 'role'), 'Out of ' + ids(B.plays).length + ' playbooks and ' + ids(B.seats).length + ' roles.'));
+    paint();
+  }
+  window.BP = {
+    data: B,
+    focus: function (engine) {
+      if (!engine) return;
+      mine = engine;
+      $('yours').appendChild(bp);
+      $('bp-count').textContent = engine.seats.length + ' of ' + ids(B.seats).length + ' roles \u00b7 ' + engine.plays.length + ' of ' + ids(B.plays).length + ' playbooks \u00b7 ' + engine.motions.length + ' of ' + B.motions.length + ' motions';
+      place(null); showMine(); draw();
+    },
+    reset: function () {
+      if (!mine) return;
+      mine = null; home.insertBefore(bp, homeNext); $('bp-count').textContent = baseCount;
+      cur = null; select('motion', B.motions[0].id); place(null); draw();
+    }
+  };
+  bp.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse' && mine) showMine(); });
+  select('motion', B.motions[0].id);
+  place(null);
+  draw();
+  if (window.ResizeObserver) new ResizeObserver(draw).observe(map); else addEventListener('resize', draw);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(draw);
+  if (window.IntersectionObserver) new IntersectionObserver(function (e) { inView = e[0].isIntersecting; }).observe(map);
+  if (!reduce) timer = setInterval(tick, 3200);
+})();
+</script>
