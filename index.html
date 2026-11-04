@@ -62,8 +62,20 @@ html[data-stage="build"] #start { display: none }
 .line.lit { background: var(--agent) }
 .v { width: 1.5px; height: 30px; transform-origin: 50% 0 }
 .rail-wrap { position: relative; width: 100%; height: 1.5px }
-.rail { position: absolute; left: 10%; right: 10%; top: 0; height: 1.5px; transform-origin: 50% 50% }
-.agents { display: grid; grid-template-columns: repeat(var(--n, 5), minmax(0, 1fr)); width: 100% }
+.rail { position: absolute; left: var(--rl, 10%); right: var(--rr, 10%); top: 0; height: 1.5px; transform-origin: 50% 50% }
+.agents { display: grid; grid-template-columns: var(--teams, minmax(0, 1fr)); width: 100% }
+.team { display: flex; flex-direction: column; align-items: center; min-width: 0 }
+.team-card { align-self: stretch; display: flex; flex-direction: column; align-items: center; margin: 0 4px; padding: 12px 0 14px; background: var(--wash); border-radius: 16px }
+.lead { display: flex; flex-direction: column; align-items: center; gap: 5px; text-align: center; padding: 0 8px }
+.lead h4 { margin: 0; font: 500 16px/1.15 var(--sans); letter-spacing: -0.02em }
+.lead .who { color: var(--ink-2) }
+.team-down { height: 16px }
+.team-rail { position: relative; width: 100%; height: 1.5px }
+.team-rail .line { position: absolute; top: 0; bottom: 0; left: var(--edge, 0); right: var(--edge, 0) }
+.kids { display: grid; grid-template-columns: repeat(var(--k, 1), minmax(0, 1fr)); width: 100% }
+.kids .col > .v { height: 18px }
+.shared { margin-top: 14px; font: 400 11px/1.5 var(--mono); letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-2); text-align: center; visibility: hidden; opacity: 0; transition: opacity .6s }
+.alive .shared { visibility: visible; opacity: 1 }
 .col { display: flex; flex-direction: column; align-items: center; min-width: 0 }
 .node { display: flex; flex-direction: column; align-items: center; gap: 7px; text-align: center; padding: 10px 6px 0; min-width: 0 }
 .pair { display: flex; align-items: center; height: 18px }
@@ -142,8 +154,11 @@ html[data-stage="build"] #start { display: none }
 .flood span { font: 400 12px var(--mono); letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.8 }
 
 @media (max-width: 760px) {
-  .rail-wrap, .col > .v { display: none }
-  .agents { grid-template-columns: minmax(0, 1fr); border-left: 1.5px solid var(--hair); margin-left: 9px; width: auto; align-self: stretch }
+  .rail-wrap, .col > .v, .team-drop, .team-down, .team-rail { display: none }
+  .agents { grid-template-columns: minmax(0, 1fr); gap: 10px; width: auto; align-self: stretch }
+  .team-card { margin: 0; padding: 12px 8px }
+  .lead { flex-direction: row; align-self: flex-start; padding: 0 6px 8px; gap: 10px; text-align: left }
+  .kids { grid-template-columns: minmax(0, 1fr) }
   .col { align-items: stretch }
   .agents .node { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; grid-template-areas: "p n a" "p w a"; column-gap: 12px; row-gap: 2px; text-align: left; align-items: center; padding: 9px 0 9px 14px }
   .agents .pair { grid-area: p } .agents h3 { grid-area: n } .agents .who { grid-area: w } .agents .amt { grid-area: a }
@@ -525,6 +540,7 @@ html.has-results[data-stage="build"] .proof.result { display: block }
       <div class="line v" id="trunk2"></div>
       <div class="rail-wrap"><div class="line rail" id="rail"></div></div>
       <div class="agents" id="agents"></div>
+      <p class="shared" id="shared"></p>
       <div class="loopkey" id="loopkey">
         <span><i class="k o"></i>Each agent tries several approaches and narrows to what works</span>
         <span><i class="k u"></i>Every outcome flows up to the weekly forecast</span>
@@ -764,10 +780,16 @@ html.has-results[data-stage="build"] .proof.result { display: block }
     $('skip').style.visibility = '';
   }
 
+  function seatName(k) { if (k === 'direct') return 'Reports to the CRO'; var B = window.BP && BP.data; return B && B.seats[k] ? B.seats[k].n : k; }
+  function leadOf(seat) {
+    var S = window.BP && BP.data && BP.data.seats;
+    if (!S || !seat || !S[seat] || seat === 'cro') return 'direct';
+    while (S[seat] && S[seat].l && S[seat].l !== 'cro') seat = S[seat].l;
+    return ['vp-sales', 'cmo', 'vp-customer'].indexOf(seat) >= 0 ? seat : 'direct';
+  }
   function buildChart(p, seated) {
     agentsEl.textContent = ''; agents = []; drops = []; work = [];
     nodes = [cro];
-    agentsEl.style.setProperty('--n', seated.length);
     var croPeople = (p.people || []).filter(function (x) { return /cro|revenue|sales|founder|ceo/i.test(x.role); }).slice(0, 2);
     var useP = croPeople.length ? croPeople : (p.people || []).slice(0, 1);
     cro.querySelector('.who').textContent = useP.map(function (x) { return x.role + ' ' + x.hoursPerWeek + ' h/wk'; }).join(' · ');
@@ -776,18 +798,42 @@ html.has-results[data-stage="build"] .proof.result { display: block }
     var fp = p.engine && p.engine.foundations ? p.engine.foundations : [];
     $('found').textContent = fp.length ? 'The fundamentals under every team: ' + fp.map(playName).join(' \u00b7 ') : '';
     work.push(workFor('CRO', 'Works with ' + (useP.map(function (x) { return x.role; }).join(' and ') || 'your lead'), croPlays, 'It ranks the work by money and can restrict any agent. It raises one only inside a range a person approved.'));
+    // Each agent sits under the lead its role reports to; roles with no lead report to the CRO directly.
+    var teams = [], byLead = {};
+    seated.forEach(function (m) { var k = leadOf(assignment(p, m).seat); if (!byLead[k]) { byLead[k] = []; teams.push(k); } byLead[k].push(m); });
+    agentsEl.style.setProperty('--teams', teams.map(function (k) { return 'minmax(0, ' + byLead[k].length + 'fr)'; }).join(' '));
+    var onLeft = byLead[teams[0]].length / 2, onRight = byLead[teams[teams.length - 1]].length / 2;
+    chart.style.setProperty('--rl', (onLeft / seated.length * 100) + '%'); chart.style.setProperty('--rr', (onRight / seated.length * 100) + '%');
+    var nodeOf = {};
+    teams.forEach(function (k) {
+      var kids = byLead[k], team = document.createElement('div'); team.className = 'team';
+      var name = seatName(k), n = kids.length, edge = 100 / (2 * n);
+      team.innerHTML = '<div class="line v team-drop"></div><div class="team-card"><div class="lead lit-p">' + (k === 'direct' ? '' : '<div class="pair"><span class="disc"></span><span class="pring"></span></div>') + '<div><h4></h4><span class="who"></span></div></div>' + (n > 0 ? '<div class="line v team-down"></div><div class="team-rail" style="--edge:' + edge + '%"><div class="line"></div></div>' : '') + '<div class="kids" style="--k:' + n + '"></div></div>';
+      team.querySelector('h4').textContent = name;
+      team.querySelector('.lead .who').textContent = n + (n === 1 ? ' agent' : ' agents');
+      var holder = team.querySelector('.kids');
+      kids.forEach(function (m) {
+        var a = assignment(p, m), col = document.createElement('div'); col.className = 'col';
+        col.innerHTML = '<div class="line v drop"></div><div class="node agent"><div class="pair"><span class="orbit"><i></i></span><span class="disc"></span><span class="pring"></span></div><h3></h3><span class="who"></span><span class="amt"></span><div class="blocks"></div></div>';
+        var n2 = col.querySelector('.node');
+        n2.querySelector('h3').textContent = a.short;
+        n2.querySelector('.who').textContent = (m.bet ? 'Bet · ' : '') + m.owner + ' · ' + m.hoursPerWeek + ' h';
+        n2.querySelector('.amt').textContent = range(m.contractableLow || 0, m.contractableHigh || 0);
+        blocks(n2, a.playbooks);
+        holder.appendChild(col);
+        nodeOf[m.motion] = col;
+      });
+      agentsEl.appendChild(team);
+    });
+    // Revealed and hovered in money order, whatever team each one is drawn in.
     seated.forEach(function (m) {
-      var a = assignment(p, m), col = document.createElement('div'); col.className = 'col';
-      col.innerHTML = '<div class="line v drop"></div><div class="node agent"><div class="pair"><span class="orbit"><i></i></span><span class="disc"></span><span class="pring"></span></div><h3></h3><span class="who"></span><span class="amt"></span><div class="blocks"></div></div>';
-      var n = col.querySelector('.node');
-      n.querySelector('h3').textContent = a.short;
-      n.querySelector('.who').textContent = (m.bet ? 'Bet \u00b7 ' : '') + m.owner + ' \u00b7 ' + m.hoursPerWeek + ' h';
-      n.querySelector('.amt').textContent = range(m.contractableLow || 0, m.contractableHigh || 0);
-      blocks(n, a.playbooks);
-      agentsEl.appendChild(col);
+      var a = assignment(p, m), col = nodeOf[m.motion], n = col.querySelector('.node');
       agents.push(n); drops.push(col.querySelector('.drop')); nodes.push(n);
       work.push(workFor(a.short, 'Works with ' + m.owner, a.playbooks, m.why));
     });
+    var svc = ['strategist', 'researcher', 'revops'].filter(function (s) { return window.BP && BP.data && BP.data.seats[s]; }).map(seatName);
+    $('shared').textContent = svc.length ? 'Shared across the team: ' + svc.join(' · ') : '';
+    if (!reduce) gsap.set(agentsEl.querySelectorAll('.team-drop, .team-card'), { autoAlpha: 0 });
     nodes.forEach(bindNode);
     if (!reduce) { gsap.set(agents, { autoAlpha: 0 }); gsap.set(drops, { scaleY: 0 }); }
   }
@@ -867,6 +913,8 @@ html.has-results[data-stage="build"] .proof.result { display: block }
           .to('#trunk2', { scaleY: 1, duration: 0.25, ease: 'power2.inOut' }, A)
           .to('#rail', { scaleX: 1, duration: 0.4, ease: 'power2.inOut' }, A + 0.1);
       }
+      var team = s.node.closest('.team');
+      if (team && !team.dataset.on) { team.dataset.on = '1'; tl.to(team.querySelectorAll('.team-drop, .team-card'), { autoAlpha: 1, duration: 0.3, ease: 'power2.out' }, A + 0.05); }
       tl.to(drops[seen], { scaleY: 1, duration: 0.3, ease: 'power2.out' }, A + 0.2);
       shownLo += s.lo; shownHi += s.hi;
       tl.to(st, { lo: shownLo, hi: shownHi, duration: 0.7, ease: 'power3.out', onUpdate: bar }, A + 0.55);
@@ -901,7 +949,7 @@ html.has-results[data-stage="build"] .proof.result { display: block }
     f.call(function () { $('trunk').classList.add('lit'); }, null, E)
       .fromTo(cro.querySelector('.disc'), { scale: 1 }, { scale: 1.5, duration: 0.18, yoyo: true, repeat: 1, ease: 'power2.out', immediateRender: false }, E + 0.12)
       .call(function () { $('trunk2').classList.add('lit'); $('rail').classList.add('lit'); }, null, E + 0.3)
-      .call(function () { drops.forEach(function (d) { d.classList.add('lit'); }); }, null, E + 0.55)
+      .call(function () { [].forEach.call(agentsEl.querySelectorAll('.line'), function (d) { d.classList.add('lit'); }); }, null, E + 0.55)
       .fromTo(agents.map(function (a) { return a.querySelector('.disc'); }), { scale: 1 }, { scale: 1.5, duration: 0.18, yoyo: true, repeat: 1, ease: 'power2.out', immediateRender: false }, E + 0.65);
     nodes.forEach(function (n, i) { f.call(function () { n.classList.add('lit-p'); }, null, E + 1.1 + i * 0.14); });
     var F = E + 1.9;
@@ -922,10 +970,11 @@ html.has-results[data-stage="build"] .proof.result { display: block }
     if (!run || !run.plan) return;
     run.finished = true; run.queue = [];
     if (tl) tl.kill();
+    curtain();
     finishText();
-    var lines = [$('trunk'), $('trunk2'), $('rail')].concat(drops);
+    var lines = [$('trunk'), $('trunk2'), $('rail')].concat([].slice.call(agentsEl.querySelectorAll('.line')));
     if (window.gsap) {
-      gsap.set(nodes.concat(lines), { clearProps: 'all' });
+      gsap.set(nodes.concat(lines).concat([].slice.call(agentsEl.querySelectorAll('.team-card'))), { clearProps: 'all' });
       gsap.set('#goal, #meter', { clearProps: 'all' });
       gsap.set('#flood', { scaleY: 0 });
       gsap.set(card, { autoAlpha: 0 });
@@ -998,8 +1047,11 @@ html.has-results[data-stage="build"] .proof.result { display: block }
     dot('M' + top.x + ' ' + top.y + ' V' + trunkY, 1.8, 0, false, 0);
     agents.forEach(function (a, i) {
       var d = mid(a.querySelector('.disc'));
-      dot('M' + d.x + ' ' + d.y + ' V' + railY + ' H' + top.x + ' V' + top.y, 3.6, -i * 0.7, false, i + 1);
-      dot('M' + top.x + ' ' + top.y + ' V' + railY + ' H' + d.x + ' V' + d.y, 3.6, -(i * 0.7 + 1.8), true, i + 1);
+      // Through the agent's lead, so the work flows up the tiers the chart shows.
+      var team = a.closest('.team'), low = team.querySelector('.team-rail').getBoundingClientRect().top - c.top, lx = mid(team.querySelector('.team-drop')).x;
+      var up = ' V' + low + ' H' + lx + ' V' + railY + ' H' + top.x + ' V' + top.y, down = 'M' + top.x + ' ' + top.y + ' V' + railY + ' H' + lx + ' V' + low + ' H' + d.x + ' V' + d.y;
+      dot('M' + d.x + ' ' + d.y + up, 3.6, -i * 0.7, false, i + 1);
+      dot(down, 3.6, -(i * 0.7 + 1.8), true, i + 1);
     });
   }
   function alive() {
