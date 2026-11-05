@@ -652,6 +652,13 @@ html.has-results[data-stage="build"] .proof.result { display: block }
   function stage(s) { root.dataset.stage = s; window.scrollTo(0, 0); }
   function host(v) { return (v || '').trim().replace(/^https?:\/\//i, '').replace(/^www\./i, '').replace(/\/.*$/, '').toLowerCase(); }
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  // The team link: kept in this browser and taken out of the address, so a shared plan link doesn't pass it on.
+  var TEAM = (function () {
+    var m = location.search.match(/[?&]team=([\w-]{8,80})/), k = m && m[1];
+    try { if (k) localStorage.setItem('landing-team', k); else k = localStorage.getItem('landing-team'); } catch (e) {}
+    if (m) history.replaceState(null, '', location.pathname + location.hash);
+    return k || undefined;
+  })();
   function call(body) {
     return fetch(WEBHOOK, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) }).then(function (r) { return r.json(); });
   }
@@ -1235,7 +1242,7 @@ html.has-results[data-stage="build"] .proof.result { display: block }
     if (!/^[a-z0-9-]+(\.[a-z0-9-]+)*\.[a-z]{2,}$/i.test(h)) { r0.textContent = 'Type a website, like yourcompany.com.'; s0.focus(); return; }
     if (!/\d/.test(goal)) { r0.textContent = 'Type a number and a date, like $2m by December.'; g0.focus(); return; }
     r0.textContent = ''; go.disabled = true;
-    call({ action: 'start', website: h, target: goal, company: $('company').value }).then(function (d) {
+    call({ action: 'start', website: h, target: goal, company: $('company').value, team: TEAM }).then(function (d) {
       if (!d.ok) { r0.textContent = d.message || 'That didn’t work. Try again.'; return; }
       begin(d.key, d.business, h, goal);
       poll();
@@ -1296,7 +1303,7 @@ html.has-results[data-stage="build"] .proof.result { display: block }
     var boxes = [].slice.call($('r-qs').querySelectorAll('textarea')), said = boxes.map(function (b) { return b.value.trim(); }), reply = $('ans-reply'), btn = $('ans-go');
     if (!said.some(Boolean)) { reply.textContent = 'Answer at least one question first.'; deckGo(0); return; }
     reply.textContent = 'Starting…'; btn.disabled = true;
-    call({ action: 'rebuild', key: run.key, answers: said }).then(function (d) {
+    call({ action: 'rebuild', key: run.key, answers: said, team: TEAM }).then(function (d) {
       if (!d.ok) { reply.textContent = d.message || 'That didn’t work. Try again.'; return; }
       begin(d.key, d.business, d.website, d.goal);
       workLine('Sharpening your plan with your answers.');
