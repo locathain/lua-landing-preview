@@ -491,7 +491,7 @@ html.has-results[data-stage="build"] .proof.result { display: block }
       <form class="ask" id="ask" novalidate>
         <label for="site0"><span class="cap">Your website</span><input id="site0" type="text" inputmode="url" autocomplete="url" placeholder="yourcompany.com"></label>
         <span class="sep" aria-hidden="true"></span>
-        <label for="goal0"><span class="cap">Your number</span><input id="goal0" type="text" placeholder="$2m by December"></label>
+        <label for="goal0"><span class="cap">Your number</span><input id="goal0" type="text" placeholder="$2m by December 2027"></label>
         <input id="company" name="company" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px">
         <button class="pill" type="submit" id="go">Meet my team</button>
       </form>
@@ -678,7 +678,7 @@ html.has-results[data-stage="build"] .proof.result { display: block }
   }
   function money(n) { return cur + short(n); }
   function range(lo, hi) {
-    if (lo >= 1e6 && hi >= 1e6) return cur + (lo / 1e6).toFixed(1) + '–' + (hi / 1e6).toFixed(1) + 'm';
+    if (lo >= 1e6 && hi >= 1e6) return cur + String((lo / 1e6).toFixed(1)).replace(/\.0$/, '') + '–' + String((hi / 1e6).toFixed(1)).replace(/\.0$/, '') + 'm';
     return cur + short(lo) + '–' + short(hi);
   }
   function longDate(d) {
@@ -948,7 +948,7 @@ html.has-results[data-stage="build"] .proof.result { display: block }
   function play(s, done) {
     if (reduce) {
       fill(s); $('c-main').style.visibility = 'visible'; $('c-skel').style.visibility = 'hidden'; card.style.visibility = 'visible';
-      if (s.node && s.node !== cro) { shownLo += s.lo; shownHi += s.hi; st.lo = shownLo; st.hi = shownHi; bar(); }
+      if (s.node && s.node !== cro) { shownLo += (s.lo + s.hi) / 2; shownHi += Math.pow((s.hi - s.lo) / 2, 2); st.lo = shownLo - Math.sqrt(shownHi); st.hi = shownLo + Math.sqrt(shownHi); bar(); }
       setTimeout(done, 1500);
       return;
     }
